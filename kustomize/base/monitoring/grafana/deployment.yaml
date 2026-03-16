@@ -3,7 +3,7 @@ apiVersion: apps/v1
 kind: Deployment
 
 metadata:
-  namespace: grafana
+  namespace: monitoring
   name: grafana-app-deployment
   labels:
     app: grafana-app
@@ -32,7 +32,7 @@ spec:
                 - ALL
           envFrom:
             - secretRef:
-                name: grafana-secrets
+                name: monitoring-secrets
           volumeMounts:
             - name: grafana-storage
               mountPath: /data
