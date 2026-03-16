@@ -1,0 +1,20 @@
+apiVersion: networking.k8s.io/v1
+
+kind: Ingress
+
+metadata:
+  namespace: keycloak
+  name: keycloak-app-ingress
+  labels:
+    app: keycloak-app
+
+spec:
+  ingressClassName: tailscale
+  defaultBackend:
+    service:
+      name: keycloak-app-service
+      port:
+        number: 80
+  tls:
+    - hosts:
+        - keycloak

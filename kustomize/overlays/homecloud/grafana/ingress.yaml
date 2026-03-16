@@ -1,0 +1,20 @@
+apiVersion: networking.k8s.io/v1
+
+kind: Ingress
+
+metadata:
+  namespace: grafana
+  name: grafana-app-ingress
+  labels:
+    app: grafana-app
+
+spec:
+  ingressClassName: tailscale
+  defaultBackend:
+    service:
+      name: grafana-app-service
+      port:
+        number: 80
+  tls:
+    - hosts:
+        - grafana

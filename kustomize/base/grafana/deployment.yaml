@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+
+kind: Deployment
+
+metadata:
+  namespace: grafana
+  name: grafana-app-deployment
+  labels:
+    app: grafana-app
+
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: grafana-app
+  template:
+    metadata:
+      labels:
+        app: grafana-app
+    spec:
+      securityContext:
+        runAsNonRoot: false
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+        - name: grafana-app
+          image: grafana/otel-lgtm:latest
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
+          envFrom:
+            - secretRef:
+                name: grafana-secrets
+          volumeMounts:
+            - name: grafana-storage
+              mountPath: /data
+      volumes:
+        - name: grafana-storage
+          persistentVolumeClaim:
+            claimName: grafana-app-pvc

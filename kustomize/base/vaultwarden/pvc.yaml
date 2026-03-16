@@ -1,0 +1,17 @@
+apiVersion: v1
+
+kind: PersistentVolumeClaim
+
+metadata:
+  namespace: vaultwarden
+  name: vaultwarden-app-pvc
+  labels:
+    app: vaultwarden-app
+
+spec:
+  storageClassName: local-path
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 2Gi

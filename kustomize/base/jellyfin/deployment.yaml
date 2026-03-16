@@ -1,0 +1,74 @@
+apiVersion: apps/v1
+
+kind: Deployment
+
+metadata:
+  namespace: jellyfin
+  name: jellyfin-app-deployment
+  labels:
+    app: jellyfin-app
+
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: jellyfin-app
+  template:
+    metadata:
+      labels:
+        app: jellyfin-app
+    spec:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+        - name: jellyfin-app
+          image: jellyfin/jellyfin:latest
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
+          volumeMounts:
+            - name: jellyfin-storage
+              mountPath: /config
+              subPath: config
+            - name: jellyfin-storage
+              mountPath: /cache
+              subPath: cache
+            - name: media-movies
+              mountPath: /mnt/movies
+              readOnly: true
+            - name: media-shows
+              mountPath: /mnt/shows
+              readOnly: true
+            - name: media-videos
+              mountPath: /mnt/videos
+              readOnly: true
+            - name: media-other
+              mountPath: /mnt/other
+              readOnly: true
+      volumes:
+        - name: jellyfin-storage
+          persistentVolumeClaim:
+            claimName: jellyfin-app-pvc
+        - name: media-movies
+          hostPath:
+            path: /mnt/homecloud/extern/media/movies
+            type: Directory
+        - name: media-shows
+          hostPath:
+            path: /mnt/homecloud/extern/media/shows
+            type: Directory
+        - name: media-videos
+          hostPath:
+            path: /mnt/homecloud/extern/media/videos
+            type: Directory
+        - name: media-other
+          hostPath:
+            path: /mnt/homecloud/extern/media/other
+            type: Directory

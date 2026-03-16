@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+
+kind: Deployment
+
+metadata:
+  namespace: opencloud
+  name: opencloud-app-deployment
+  labels:
+    app: opencloud-app
+
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: opencloud-app
+  template:
+    metadata:
+      labels:
+        app: opencloud-app
+    spec:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+        - name: opencloud-app
+          image: opencloudeu/opencloud-rolling:5.2.0
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
+          command: ["/bin/sh"]
+          args: ["-c", "opencloud init || true; opencloud server"]
+          envFrom:
+            - secretRef:
+                name: opencloud-secrets
+          volumeMounts:
+            - name: opencloud-storage
+              mountPath: /etc/opencloud
+              subPath: config
+            - name: opencloud-storage
+              mountPath: /var/lib/opencloud
+              subPath: data
+      volumes:
+        - name: opencloud-storage
+          persistentVolumeClaim:
+            claimName: opencloud-app-pvc

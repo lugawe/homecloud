@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+
+kind: Deployment
+
+metadata:
+  namespace: keycloak
+  name: keycloak-database-deployment
+  labels:
+    app: keycloak-database
+
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: keycloak-database
+  template:
+    metadata:
+      labels:
+        app: keycloak-database
+    spec:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 70
+        runAsGroup: 70
+        fsGroup: 70
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+        - name: keycloak-database
+          image: postgres:18-alpine
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
+          envFrom:
+            - secretRef:
+                name: keycloak-secrets
+          volumeMounts:
+            - name: keycloak-database-storage
+              mountPath: /var/lib/postgresql/data
+      volumes:
+        - name: keycloak-database-storage
+          persistentVolumeClaim:
+            claimName: keycloak-database-pvc

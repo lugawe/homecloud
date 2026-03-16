@@ -1,0 +1,18 @@
+apiVersion: v1
+
+kind: Service
+
+metadata:
+  namespace: keycloak
+  name: keycloak-database-service
+  labels:
+    app: keycloak-database
+
+spec:
+  selector:
+    app: keycloak-database
+  type: ClusterIP
+  ports:
+    - name: postgres
+      port: 5432
+      targetPort: 5432

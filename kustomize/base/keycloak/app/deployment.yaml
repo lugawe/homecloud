@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+
+kind: Deployment
+
+metadata:
+  namespace: keycloak
+  name: keycloak-app-deployment
+  labels:
+    app: keycloak-app
+
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: keycloak-app
+  template:
+    metadata:
+      labels:
+        app: keycloak-app
+    spec:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+        - name: keycloak-app
+          image: keycloak/keycloak:26.5
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
+          args: ["start"]
+          envFrom:
+            - secretRef:
+                name: keycloak-secrets
