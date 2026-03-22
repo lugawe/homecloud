@@ -27,7 +27,7 @@ spec:
           type: RuntimeDefault
       containers:
         - name: vaultwarden-app
-          image: vaultwarden/server:latest
+          image: vaultwarden/server:1.35.4-alpine
           securityContext:
             allowPrivilegeEscalation: false
             capabilities:
