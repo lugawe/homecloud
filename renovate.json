@@ -1,0 +1,41 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:recommended"
+  ],
+  "kubernetes": {
+    "fileMatch": [
+      "kustomize/.+\\.ya?ml$"
+    ]
+  },
+  "packageRules": [
+    {
+      "description": "Automerge patch updates for stable images",
+      "matchUpdateTypes": [
+        "patch"
+      ],
+      "matchPackageNames": [
+        "keycloak/keycloak",
+        "grafana/otel-lgtm",
+        "opencloudeu/opencloud-rolling",
+        "outlinewiki/outline",
+        "vaultwarden/server"
+      ],
+      "automerge": false
+    },
+    {
+      "description": "Group postgres updates",
+      "matchPackageNames": [
+        "postgres"
+      ],
+      "groupName": "postgres"
+    },
+    {
+      "description": "Group redis updates",
+      "matchPackageNames": [
+        "redis"
+      ],
+      "groupName": "redis"
+    }
+  ]
+}
