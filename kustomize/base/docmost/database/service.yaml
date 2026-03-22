@@ -1,0 +1,18 @@
+apiVersion: v1
+
+kind: Service
+
+metadata:
+  namespace: docmost
+  name: docmost-database-service
+  labels:
+    app: docmost-database
+
+spec:
+  selector:
+    app: docmost-database
+  type: ClusterIP
+  ports:
+    - name: postgres
+      port: 5432
+      targetPort: 5432

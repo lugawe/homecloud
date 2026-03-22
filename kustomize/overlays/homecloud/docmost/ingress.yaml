@@ -1,0 +1,20 @@
+apiVersion: networking.k8s.io/v1
+
+kind: Ingress
+
+metadata:
+  namespace: docmost
+  name: docmost-app-ingress
+  labels:
+    app: docmost-app
+
+spec:
+  ingressClassName: tailscale
+  defaultBackend:
+    service:
+      name: docmost-app-service
+      port:
+        number: 80
+  tls:
+    - hosts:
+        - docmost

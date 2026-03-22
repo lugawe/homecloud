@@ -13,6 +13,8 @@ resources:
   # ---
   - opencloud
   # ---
+  - docmost
+  # ---
   - jellyfin
   # ---
   - vaultwarden

@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+
+kind: Deployment
+
+metadata:
+  namespace: docmost
+  name: docmost-database-deployment
+  labels:
+    app: docmost-database
+
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: docmost-database
+  template:
+    metadata:
+      labels:
+        app: docmost-database
+    spec:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 70
+        runAsGroup: 70
+        fsGroup: 70
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+        - name: docmost-database
+          image: postgres:18-alpine
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
+          envFrom:
+            - secretRef:
+                name: docmost-secrets
+          volumeMounts:
+            - name: docmost-database-storage
+              mountPath: /var/lib/postgresql/data
+      volumes:
+        - name: docmost-database-storage
+          persistentVolumeClaim:
+            claimName: docmost-database-pvc
