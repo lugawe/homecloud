@@ -38,7 +38,7 @@ spec:
                 name: outline-secrets
           volumeMounts:
             - name: outline-database-storage
-              mountPath: /var/lib/postgresql/data
+              mountPath: /var/lib/postgresql
       volumes:
         - name: outline-database-storage
           persistentVolumeClaim:
