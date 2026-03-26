@@ -5,15 +5,15 @@ kind: Kustomization
 resources:
   - ../../secrets
   # ---
-  - ../../base/infrastructure/tailscale
-  # ---
   - infrastructure/argocd
   # ---
-  - infrastructure/grafana
+  - infrastructure/longhorn
   # ---
   - infrastructure/rustfs
   # ---
-  - infrastructure/longhorn
+  - infrastructure/grafana
+  # ---
+  - infrastructure/tailscale
   # ---
   - keycloak
   # ---
