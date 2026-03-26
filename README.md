@@ -12,6 +12,13 @@ Prepare [OAuth Client](https://login.tailscale.com/admin/settings/trust-credenti
 
 ### Storage
 
+Ensure the following mount directories exist:
+
+```
+/mnt/homecloud/longhorn
+/mnt/homecloud/extern/media
+```
+
 Install following packages:
 
 ```bash
