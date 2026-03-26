@@ -9,7 +9,7 @@ metadata:
     app: vaultwarden-app
 
 spec:
-  storageClassName: local-path
+  storageClassName: longhorn
   accessModes:
     - ReadWriteOnce
   resources:

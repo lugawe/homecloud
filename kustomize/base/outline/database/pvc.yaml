@@ -9,7 +9,7 @@ metadata:
     app: outline-database
 
 spec:
-  storageClassName: local-path
+  storageClassName: longhorn
   accessModes:
     - ReadWriteOnce
   resources:
