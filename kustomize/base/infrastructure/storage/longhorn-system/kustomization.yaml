@@ -16,6 +16,7 @@ helmCharts:
     includeCRDs: true
     valuesInline:
       defaultSettings:
+        defaultDataPath: /mnt/homecloud/longhorn
         defaultReplicaCount: 1
       persistence:
         defaultClassReplicaCount: 1
