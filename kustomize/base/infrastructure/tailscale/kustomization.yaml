@@ -23,5 +23,3 @@ helmCharts:
         defaultTags:
           - tag:k8s
           - tag:homecloud
-      apiServerProxyConfig:
-        mode: "true"
