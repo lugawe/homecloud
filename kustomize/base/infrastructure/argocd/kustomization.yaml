@@ -15,5 +15,6 @@ helmCharts:
     version: 9.4.16
     includeCRDs: true
     valuesInline:
-      server:
-        insecure: true
+      configs:
+        params:
+          server.insecure: true
