@@ -38,6 +38,12 @@ mkdir -p /etc/rancher/k3s && echo "data-dir: /mnt/homecloud/k3s" > /etc/rancher/
 curl -sfL https://get.k3s.io | sh -
 ```
 
+(Optional) To prevent k3s autostart:
+
+```bash
+systemctl disable k3s
+```
+
 ### Tailscale
 
 Add the tags `k8s` and `homecloud`.
