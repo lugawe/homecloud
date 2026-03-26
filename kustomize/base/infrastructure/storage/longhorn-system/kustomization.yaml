@@ -8,10 +8,10 @@ resources:
   - namespace.yaml
 
 helmCharts:
-  - name: longhorn
-    repo: https://charts.longhorn.io
+  - namespace: longhorn-system
     releaseName: longhorn
-    namespace: longhorn-system
+    repo: https://charts.longhorn.io
+    name: longhorn
     version: 1.11.1
     includeCRDs: true
     valuesInline:
