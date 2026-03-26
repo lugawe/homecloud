@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+
+kind: Deployment
+
+metadata:
+  namespace: storage
+  name: rustfs
+  labels:
+    app: rustfs
+
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: rustfs
+  template:
+    metadata:
+      labels:
+        app: rustfs
+    spec:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+        - name: rustfs
+          image: rustfs/rustfs:1.0.0-alpha.90
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
+          args: ["/data"]
+          envFrom:
+            - secretRef:
+                name: rustfs-secrets
+          volumeMounts:
+            - name: rustfs-storage
+              mountPath: /data
+      volumes:
+        - name: rustfs-storage
+          persistentVolumeClaim:
+            claimName: rustfs-pvc

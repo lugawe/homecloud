@@ -11,6 +11,8 @@ resources:
   # ---
   - infrastructure/grafana
   # ---
+  - infrastructure/rustfs
+  # ---
   - infrastructure/longhorn
   # ---
   - keycloak
