@@ -5,7 +5,6 @@ kind: Kustomization
 namespace: storage
 
 resources:
-  - namespace.yaml
   - pvc.yaml
   - deployment.yaml
   - service.yaml
