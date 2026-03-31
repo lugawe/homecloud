@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+
+kind: Deployment
+
+metadata:
+  namespace: outline
+  name: outline-app
+  labels:
+    app: outline-app
+
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: outline-app
+  template:
+    metadata:
+      labels:
+        app: outline-app
+    spec:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1001
+        runAsGroup: 1001
+        fsGroup: 1001
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+        - name: outline-app
+          image: outlinewiki/outline:1.6.1
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
+          envFrom:
+            - secretRef:
+                name: outline-secrets
+          volumeMounts:
+            - name: outline-app-storage
+              mountPath: /var/lib/outline/data
+      volumes:
+        - name: outline-app-storage
+          persistentVolumeClaim:
+            claimName: outline-app-pvc

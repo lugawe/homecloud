@@ -1,0 +1,18 @@
+apiVersion: v1
+
+kind: Service
+
+metadata:
+  namespace: outline
+  name: outline-app
+  labels:
+    app: outline-app
+
+spec:
+  selector:
+    app: outline-app
+  type: ClusterIP
+  ports:
+    - name: http
+      port: 80
+      targetPort: 3000

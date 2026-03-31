@@ -1,0 +1,17 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+
+kind: Kustomization
+
+namespace: secrets-system
+
+helmCharts:
+  - namespace: secrets-system
+    releaseName: vault-secrets-operator
+    repo: https://helm.releases.hashicorp.com
+    name: vault-secrets-operator
+    version: 1.3.0
+    includeCRDs: true
+    valuesInline:
+      defaultVaultConnection:
+        enabled: true
+        address: "http://vault.secrets-system.svc.cluster.local:8200"

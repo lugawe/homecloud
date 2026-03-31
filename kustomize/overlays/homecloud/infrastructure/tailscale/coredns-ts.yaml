@@ -1,0 +1,15 @@
+apiVersion: v1
+
+kind: ConfigMap
+
+metadata:
+  namespace: kube-system
+  name: coredns-custom
+
+data:
+  ts.net.server: |
+    ts.net:53 {
+        errors
+        cache 30
+        forward . 10.43.0.140
+    }

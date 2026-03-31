@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+
+kind: Deployment
+
+metadata:
+  namespace: secrets-system
+  name: vault
+  labels:
+    app: vault
+
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: vault
+  template:
+    metadata:
+      labels:
+        app: vault
+    spec:
+      serviceAccountName: vault
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 100
+        runAsGroup: 1000
+        fsGroup: 1000
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+        - name: vault
+          image: hashicorp/vault:1.21
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
+          command: ["vault"]
+          args: ["server", "-config=/vault/config/vault.hcl"]
+          env:
+            - name: VAULT_ADDR
+              value: "http://127.0.0.1:8200"
+          volumeMounts:
+            - name: vault-config
+              mountPath: /vault/config
+            - name: vault-storage
+              mountPath: /vault/data
+      volumes:
+        - name: vault-config
+          configMap:
+            name: vault-config
+        - name: vault-storage
+          persistentVolumeClaim:
+            claimName: vault-pvc

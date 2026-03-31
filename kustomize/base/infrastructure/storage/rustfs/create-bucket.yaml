@@ -1,0 +1,53 @@
+apiVersion: batch/v1
+
+kind: Job
+
+metadata:
+  namespace: storage
+  name: rustfs-create-bucket
+
+spec:
+  ttlSecondsAfterFinished: 300
+  template:
+    spec:
+      restartPolicy: OnFailure
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+        - name: rclone
+          image: rclone/rclone:1.73
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
+          command: ["rclone", "mkdir", "rustfs:longhorn-backups"]
+          env:
+            - name: RCLONE_CONFIG_RUSTFS_TYPE
+              value: "s3"
+            - name: RCLONE_CONFIG_RUSTFS_REGION
+              value: "eu-central-1"
+            - name: RCLONE_CONFIG_RUSTFS_PROVIDER
+              value: "Other"
+            - name: RCLONE_CONFIG_RUSTFS_PATH_STYLE
+              value: "true"
+            - name: RCLONE_CONFIG_RUSTFS_ACCESS_KEY_ID
+              valueFrom:
+                secretKeyRef:
+                  name: storage-secrets
+                  key: AWS_ACCESS_KEY_ID
+            - name: RCLONE_CONFIG_RUSTFS_SECRET_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: storage-secrets
+                  key: AWS_SECRET_ACCESS_KEY
+            - name: RCLONE_CONFIG_RUSTFS_ENDPOINT
+              valueFrom:
+                secretKeyRef:
+                  name: storage-secrets
+                  key: AWS_ENDPOINTS

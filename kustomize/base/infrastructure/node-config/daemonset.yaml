@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+
+kind: DaemonSet
+
+metadata:
+  namespace: node-config
+  name: sysctl-config
+
+spec:
+  selector:
+    matchLabels:
+      app: sysctl-config
+  template:
+    metadata:
+      labels:
+        app: sysctl-config
+    spec:
+      tolerations:
+        - operator: Exists
+      containers:
+        - name: sysctl-config
+          image: busybox:1.37-musl
+          securityContext:
+            privileged: true
+          command:
+            - sh
+            - -c
+            - |
+              sysctl -w fs.inotify.max_user_instances=1024
+              sysctl -w fs.inotify.max_user_watches=524288
+              sleep infinity

@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+
+kind: Deployment
+
+metadata:
+  namespace: outline
+  name: outline-database
+  labels:
+    app: outline-database
+
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: outline-database
+  template:
+    metadata:
+      labels:
+        app: outline-database
+    spec:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 70
+        runAsGroup: 70
+        fsGroup: 70
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+        - name: outline-database
+          image: postgres:18-alpine
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
+          envFrom:
+            - secretRef:
+                name: outline-secrets
+          volumeMounts:
+            - name: outline-database-storage
+              mountPath: /var/lib/postgresql
+      volumes:
+        - name: outline-database-storage
+          persistentVolumeClaim:
+            claimName: outline-database-pvc
