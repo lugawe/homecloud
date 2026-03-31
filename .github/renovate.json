@@ -1,0 +1,29 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:recommended"
+  ],
+  "dependencyDashboard": false,
+  "prHourlyLimit": 0,
+  "kubernetes": {
+    "fileMatch": [
+      "kustomize/.+\\.ya?ml$"
+    ]
+  },
+  "packageRules": [
+    {
+      "description": "Group postgres updates",
+      "matchPackageNames": [
+        "postgres"
+      ],
+      "groupName": "postgres"
+    },
+    {
+      "description": "Group redis updates",
+      "matchPackageNames": [
+        "redis"
+      ],
+      "groupName": "redis"
+    }
+  ]
+}
