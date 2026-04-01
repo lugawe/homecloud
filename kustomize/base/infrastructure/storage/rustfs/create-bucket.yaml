@@ -36,6 +36,11 @@ spec:
               value: "Other"
             - name: RCLONE_CONFIG_RUSTFS_PATH_STYLE
               value: "true"
+            - name: RCLONE_CONFIG_RUSTFS_ENDPOINT
+              valueFrom:
+                secretKeyRef:
+                  name: storage-secrets
+                  key: AWS_ENDPOINTS
             - name: RCLONE_CONFIG_RUSTFS_ACCESS_KEY_ID
               valueFrom:
                 secretKeyRef:
@@ -46,8 +51,3 @@ spec:
                 secretKeyRef:
                   name: storage-secrets
                   key: AWS_SECRET_ACCESS_KEY
-            - name: RCLONE_CONFIG_RUSTFS_ENDPOINT
-              valueFrom:
-                secretKeyRef:
-                  name: storage-secrets
-                  key: AWS_ENDPOINTS
