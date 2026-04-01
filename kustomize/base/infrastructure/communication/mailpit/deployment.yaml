@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+
+kind: Deployment
+
+metadata:
+  namespace: communication
+  name: mailpit
+  labels:
+    app: mailpit
+
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mailpit
+  template:
+    metadata:
+      labels:
+        app: mailpit
+    spec:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+        - name: mailpit
+          image: axllent/mailpit:v1.29.5
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
+          env:
+            - name: MP_MAX_MESSAGES
+              value: 5000
+            - name: MP_DATABASE
+              value: /data/mailpit.db
+            - name: MP_SMTP_AUTH_ACCEPT_ANY
+              value: 1
+            - name: MP_SMTP_AUTH_ALLOW_INSECURE
+              value: 1
+          volumeMounts:
+            - name: mailpit-storage
+              mountPath: /data
+      volumes:
+        - name: mailpit-storage
+          persistentVolumeClaim:
+            claimName: mailpit-pvc

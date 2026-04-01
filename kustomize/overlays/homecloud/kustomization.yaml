@@ -13,6 +13,8 @@ resources:
   # ---
   - infrastructure/monitoring
   # ---
+  - infrastructure/communication
+  # ---
   - infrastructure/tailscale
   # ---
   - apps/keycloak

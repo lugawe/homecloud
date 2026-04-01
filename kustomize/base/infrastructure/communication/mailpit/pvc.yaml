@@ -1,0 +1,17 @@
+apiVersion: v1
+
+kind: PersistentVolumeClaim
+
+metadata:
+  namespace: communication
+  name: mailpit-pvc
+  labels:
+    app: mailpit
+
+spec:
+  storageClassName: longhorn
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 4Gi
