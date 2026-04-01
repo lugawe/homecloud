@@ -27,7 +27,7 @@ spec:
           type: RuntimeDefault
       containers:
         - name: jellyfin-app
-          image: jellyfin/jellyfin:latest
+          image: jellyfin/jellyfin:10.11.7
           securityContext:
             allowPrivilegeEscalation: false
             capabilities:
