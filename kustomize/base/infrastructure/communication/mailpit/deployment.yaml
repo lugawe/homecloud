@@ -35,13 +35,13 @@ spec:
                 - ALL
           env:
             - name: MP_MAX_MESSAGES
-              value: 5000
+              value: "5000"
             - name: MP_DATABASE
-              value: /data/mailpit.db
+              value: "/data/mailpit.db"
             - name: MP_SMTP_AUTH_ACCEPT_ANY
-              value: 1
+              value: "1"
             - name: MP_SMTP_AUTH_ALLOW_INSECURE
-              value: 1
+              value: "1"
           volumeMounts:
             - name: mailpit-storage
               mountPath: /data
