@@ -4,5 +4,4 @@ kind: Kustomization
 
 resources:
   - ../../../../base/apps/dev
-  - code-server-ingress.yaml
-  - pgadmin-ingress.yaml
+  - ingress.yaml
