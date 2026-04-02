@@ -1,0 +1,20 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+
+kind: Kustomization
+
+namespace: dev
+
+resources:
+  - namespace.yaml
+  - secrets.yaml
+  - code-server/deployment.yaml
+  - code-server/pvc.yaml
+  - code-server/service.yaml
+  - postgres/deployment.yaml
+  - postgres/pvc.yaml
+  - postgres/service.yaml
+  - pgadmin/deployment.yaml
+  - pgadmin/pvc.yaml
+  - pgadmin/service.yaml
+  - redis/deployment.yaml
+  - redis/service.yaml

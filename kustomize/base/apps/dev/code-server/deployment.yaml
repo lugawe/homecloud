@@ -1,0 +1,61 @@
+apiVersion: apps/v1
+
+kind: Deployment
+
+metadata:
+  namespace: dev
+  name: code-server
+  labels:
+    app: code-server
+
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: code-server
+  template:
+    metadata:
+      labels:
+        app: code-server
+    spec:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        seccompProfile:
+          type: RuntimeDefault
+      initContainers:
+        - name: code-server-create-coderc
+          image: busybox:1.37-musl
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
+          command: ["sh", "-c", "touch /mnt/.coderc"]
+          volumeMounts:
+            - name: code-server-storage
+              mountPath: /mnt
+      containers:
+        - name: code-server
+          image: ghcr.io/lugawe/code-server:v1.1.0
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
+          envFrom:
+            - secretRef:
+                name: dev-secrets
+          volumeMounts:
+            - name: code-server-storage
+              mountPath: /home/coder/.coderc
+              subPath: .coderc
+            - name: code-server-storage
+              mountPath: /home/coder/workspace
+              subPath: workspace
+      volumes:
+        - name: code-server-storage
+          persistentVolumeClaim:
+            claimName: code-server-pvc

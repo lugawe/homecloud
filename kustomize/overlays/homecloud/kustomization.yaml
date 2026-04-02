@@ -19,6 +19,8 @@ resources:
   # ---
   - apps/keycloak
   # ---
+  - apps/dev
+  # ---
   - apps/vaultwarden
   # ---
   - apps/opencloud
