@@ -33,9 +33,6 @@ spec:
             capabilities:
               drop:
                 - ALL
-          env:
-            - name: PGADMIN_CONFIG_SERVER_MODE
-              value: "False"
           envFrom:
             - secretRef:
                 name: dev-secrets
