@@ -13,8 +13,5 @@ resources:
   - postgres/deployment.yaml
   - postgres/pvc.yaml
   - postgres/service.yaml
-  - pgadmin/deployment.yaml
-  - pgadmin/pvc.yaml
-  - pgadmin/service.yaml
   - redis/deployment.yaml
   - redis/service.yaml
