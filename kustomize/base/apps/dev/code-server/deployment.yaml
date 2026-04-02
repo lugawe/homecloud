@@ -18,6 +18,7 @@ spec:
       labels:
         app: code-server
     spec:
+      hostname: code-server
       securityContext:
         runAsNonRoot: true
         runAsUser: 1000
