@@ -33,6 +33,9 @@ spec:
             capabilities:
               drop:
                 - ALL
+          env:
+            - name: PGADMIN_LISTEN_PORT
+              value: 5050
           envFrom:
             - secretRef:
                 name: dev-secrets
