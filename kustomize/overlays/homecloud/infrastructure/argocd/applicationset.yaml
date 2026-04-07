@@ -1,0 +1,38 @@
+apiVersion: argoproj.io/v1alpha1
+
+kind: ApplicationSet
+
+metadata:
+  namespace: argocd
+  name: homecloud
+
+spec:
+  generators:
+    - git:
+        repoURL: https://github.com/lugawe/homecloud.git
+        revision: HEAD
+        directories:
+          - path: kustomize/overlays/homecloud/infrastructure/*
+          - path: kustomize/overlays/homecloud/apps/*
+  template:
+    metadata:
+      namespace: argocd
+      name: "{{path.basename}}"
+      finalizers:
+        - resources-finalizer.argocd.io/foreground
+    spec:
+      project: default
+      source:
+        repoURL: https://github.com/lugawe/homecloud.git
+        targetRevision: HEAD
+        path: "{{path}}"
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: "{{path.basename}}"
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+        syncOptions:
+          - CreateNamespace=true
+          - ServerSideApply=true
