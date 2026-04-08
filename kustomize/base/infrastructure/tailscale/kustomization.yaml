@@ -14,7 +14,7 @@ helmCharts:
     releaseName: tailscale-operator
     repo: https://pkgs.tailscale.com/helmcharts
     name: tailscale-operator
-    version: 1.94.2
+    version: 1.96.5
     includeCRDs: true
     valuesInline:
       oauthSecretVolume:
