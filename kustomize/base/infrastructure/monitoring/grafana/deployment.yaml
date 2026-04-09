@@ -4,26 +4,26 @@ kind: Deployment
 
 metadata:
   namespace: monitoring
-  name: grafana-app
+  name: grafana
   labels:
-    app: grafana-app
+    app: grafana
 
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: grafana-app
+      app: grafana
   template:
     metadata:
       labels:
-        app: grafana-app
+        app: grafana
     spec:
       securityContext:
         runAsNonRoot: false
         seccompProfile:
           type: RuntimeDefault
       containers:
-        - name: grafana-app
+        - name: grafana
           image: grafana/otel-lgtm:0.23.0
           securityContext:
             allowPrivilegeEscalation: false
@@ -34,9 +34,9 @@ spec:
             - secretRef:
                 name: monitoring-secrets
           volumeMounts:
-            - name: grafana-app-storage
+            - name: grafana-storage
               mountPath: /data
       volumes:
-        - name: grafana-app-storage
+        - name: grafana-storage
           persistentVolumeClaim:
-            claimName: grafana-app-pvc
+            claimName: grafana-pvc

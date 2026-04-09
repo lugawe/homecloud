@@ -4,15 +4,15 @@ kind: Ingress
 
 metadata:
   namespace: monitoring
-  name: grafana-app-ingress
+  name: grafana-ingress
   labels:
-    app: grafana-app
+    app: grafana
 
 spec:
   ingressClassName: tailscale
   defaultBackend:
     service:
-      name: grafana-app
+      name: grafana
       port:
         number: 80
   tls:

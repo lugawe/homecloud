@@ -4,9 +4,9 @@ kind: PersistentVolumeClaim
 
 metadata:
   namespace: monitoring
-  name: grafana-app-pvc
+  name: grafana-pvc
   labels:
-    app: grafana-app
+    app: grafana
 
 spec:
   storageClassName: longhorn

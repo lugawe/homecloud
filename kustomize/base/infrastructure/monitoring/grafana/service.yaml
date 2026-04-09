@@ -4,13 +4,13 @@ kind: Service
 
 metadata:
   namespace: monitoring
-  name: grafana-app
+  name: grafana
   labels:
-    app: grafana-app
+    app: grafana
 
 spec:
   selector:
-    app: grafana-app
+    app: grafana
   type: ClusterIP
   ports:
     - name: http
