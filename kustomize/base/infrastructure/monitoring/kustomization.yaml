@@ -10,3 +10,6 @@ resources:
   - grafana/deployment.yaml
   - grafana/pvc.yaml
   - grafana/service.yaml
+  - alloy/configmap.yaml
+  - alloy/rbac.yaml
+  - alloy/daemonset.yaml

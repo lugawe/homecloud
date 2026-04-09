@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+
+kind: DaemonSet
+
+metadata:
+  namespace: monitoring
+  name: alloy
+  labels:
+    app: alloy
+
+spec:
+  selector:
+    matchLabels:
+      app: alloy
+  template:
+    metadata:
+      labels:
+        app: alloy
+    spec:
+      serviceAccountName: alloy
+      tolerations:
+        - operator: Exists
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 473
+        runAsGroup: 473
+        fsGroup: 473
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+        - name: alloy
+          image: grafana/alloy:v1.15.0
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
+          args: ["run", "--storage.path=/tmp/alloy", "/etc/alloy/config.alloy"]
+          volumeMounts:
+            - name: alloy-config
+              mountPath: /etc/alloy
+      volumes:
+        - name: alloy-config
+          configMap:
+            name: alloy-configmap
