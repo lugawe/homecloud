@@ -1,0 +1,64 @@
+apiVersion: apps/v1
+
+kind: DaemonSet
+
+metadata:
+  namespace: monitoring
+  name: node-exporter
+  labels:
+    app: node-exporter
+
+spec:
+  selector:
+    matchLabels:
+      app: node-exporter
+  template:
+    metadata:
+      labels:
+        app: node-exporter
+    spec:
+      hostPID: true
+      hostNetwork: true
+      dnsPolicy: ClusterFirstWithHostNet
+      tolerations:
+        - operator: Exists
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 65534
+        runAsGroup: 65534
+        fsGroup: 65534
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+        - name: node-exporter
+          image: prom/node-exporter:v1.11.1
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
+          args:
+            - --path.rootfs=/host/root
+            - --path.procfs=/host/proc
+            - --path.sysfs=/host/sys
+          volumeMounts:
+            - name: node-exporter-root
+              mountPath: /host/root
+              mountPropagation: HostToContainer
+              readOnly: true
+            - name: node-exporter-proc
+              mountPath: /host/proc
+              readOnly: true
+            - name: node-exporter-sys
+              mountPath: /host/sys
+              readOnly: true
+      volumes:
+        - name: node-exporter-root
+          hostPath:
+            path: /
+        - name: node-exporter-proc
+          hostPath:
+            path: /proc
+        - name: node-exporter-sys
+          hostPath:
+            path: /sys

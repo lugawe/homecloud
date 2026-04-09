@@ -13,3 +13,5 @@ resources:
   - alloy/configmap.yaml
   - alloy/rbac.yaml
   - alloy/daemonset.yaml
+  - node-exporter/daemonset.yaml
+  - node-exporter/service.yaml
