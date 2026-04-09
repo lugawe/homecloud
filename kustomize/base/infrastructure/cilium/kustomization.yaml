@@ -1,0 +1,25 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+
+kind: Kustomization
+
+namespace: cilium
+
+resources:
+  - namespace.yaml
+
+helmCharts:
+  - namespace: cilium
+    releaseName: cilium
+    repo: https://helm.cilium.io
+    name: cilium
+    version: 1.19.2
+    includeCRDs: true
+    valuesInline:
+      operator:
+        replicas: 1
+      ipam:
+        mode: kubernetes
+      encryption:
+        enabled: true
+        nodeEncryption: true
+        type: wireguard

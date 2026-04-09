@@ -4,27 +4,17 @@ kind: Kustomization
 
 resources:
   - infrastructure/node-config
-  # ---
+  - infrastructure/cilium
   - infrastructure/secrets-system
-  # ---
   - infrastructure/storage
-  # ---
   - infrastructure/argocd
-  # ---
   - infrastructure/monitoring
-  # ---
   - infrastructure/communication
-  # ---
   - infrastructure/tailscale
   # ---
   - apps/keycloak
-  # ---
   - apps/dev
-  # ---
   - apps/vaultwarden
-  # ---
   - apps/opencloud
-  # ---
   - apps/outline
-  # ---
   - apps/jellyfin
