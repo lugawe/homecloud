@@ -36,12 +36,16 @@ systemctl enable --now iscsid
 
 ### Install k3s
 
+Prepare config file in `/etc/rancher/k3s/config.yaml`:
+
+```yaml
+data-dir: /mnt/homecloud/k3s
+flannel-backend: none
+```
+
 Installation:
 
 ```bash
-# Prepare config
-mkdir -p /etc/rancher/k3s && echo "data-dir: /mnt/homecloud/k3s" > /etc/rancher/k3s/config.yaml
-
 # Install k3s
 curl -sfL https://get.k3s.io | sh -
 ```
