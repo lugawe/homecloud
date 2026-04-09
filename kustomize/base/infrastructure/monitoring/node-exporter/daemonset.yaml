@@ -17,9 +17,6 @@ spec:
       labels:
         app: node-exporter
     spec:
-      hostPID: true
-      hostNetwork: true
-      dnsPolicy: ClusterFirstWithHostNet
       tolerations:
         - operator: Exists
       securityContext:
