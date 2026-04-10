@@ -4,6 +4,9 @@ kind: Kustomization
 
 namespace: storage
 
+resources:
+  - recurring-jobs.yaml
+
 helmCharts:
   - namespace: storage
     releaseName: longhorn
@@ -15,8 +18,14 @@ helmCharts:
       defaultSettings:
         defaultDataPath: /mnt/homecloud/longhorn
         defaultReplicaCount: 1
+        allowRecurringJobWhileVolumeDetached: true
       defaultBackupStore:
         backupTarget: s3://longhorn-backups@eu-central-1/
         backupTargetCredentialSecret: storage-secrets
       persistence:
         defaultClassReplicaCount: 1
+        recurringJobSelector:
+          enable: true
+          jobList:
+            - name: default
+              isGroup: true
