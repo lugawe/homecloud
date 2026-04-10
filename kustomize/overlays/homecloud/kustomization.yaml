@@ -11,8 +11,8 @@ resources:
   - infrastructure/monitoring
   - infrastructure/communication
   - infrastructure/tailscale
+  - infrastructure/keycloak
   # ---
-  - apps/keycloak
   - apps/dev
   - apps/vaultwarden
   - apps/opencloud

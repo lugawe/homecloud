@@ -4,19 +4,19 @@ kind: Deployment
 
 metadata:
   namespace: keycloak
-  name: keycloak-app
+  name: keycloak
   labels:
-    app: keycloak-app
+    app: keycloak
 
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: keycloak-app
+      app: keycloak
   template:
     metadata:
       labels:
-        app: keycloak-app
+        app: keycloak
     spec:
       securityContext:
         runAsNonRoot: true
@@ -26,7 +26,7 @@ spec:
         seccompProfile:
           type: RuntimeDefault
       containers:
-        - name: keycloak-app
+        - name: keycloak
           image: keycloak/keycloak:26.5.7
           securityContext:
             allowPrivilegeEscalation: false

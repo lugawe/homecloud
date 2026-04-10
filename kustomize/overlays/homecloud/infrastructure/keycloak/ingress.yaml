@@ -4,15 +4,15 @@ kind: Ingress
 
 metadata:
   namespace: keycloak
-  name: keycloak-app-ingress
+  name: keycloak-ingress
   labels:
-    app: keycloak-app
+    app: keycloak
 
 spec:
   ingressClassName: tailscale
   defaultBackend:
     service:
-      name: keycloak-app
+      name: keycloak
       port:
         number: 80
   tls:

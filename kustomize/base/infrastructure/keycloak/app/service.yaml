@@ -4,13 +4,13 @@ kind: Service
 
 metadata:
   namespace: keycloak
-  name: keycloak-app
+  name: keycloak
   labels:
-    app: keycloak-app
+    app: keycloak
 
 spec:
   selector:
-    app: keycloak-app
+    app: keycloak
   type: ClusterIP
   ports:
     - name: http
