@@ -27,7 +27,7 @@ spec:
           type: RuntimeDefault
       containers:
         - name: rustfs
-          image: rustfs/rustfs:1.0.0-alpha.90
+          image: rustfs/rustfs:1.0.0-alpha.93
           securityContext:
             allowPrivilegeEscalation: false
             capabilities:
