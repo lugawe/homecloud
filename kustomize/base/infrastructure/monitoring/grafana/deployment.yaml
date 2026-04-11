@@ -24,7 +24,7 @@ spec:
           type: RuntimeDefault
       containers:
         - name: grafana
-          image: grafana/otel-lgtm:0.23.0
+          image: grafana/otel-lgtm:0.24.0
           securityContext:
             allowPrivilegeEscalation: false
             capabilities:
