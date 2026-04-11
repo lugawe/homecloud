@@ -24,8 +24,3 @@ helmCharts:
         backupTargetCredentialSecret: storage-secrets
       persistence:
         defaultClassReplicaCount: 1
-        recurringJobSelector:
-          enable: true
-          jobList:
-            - name: default
-              isGroup: true
