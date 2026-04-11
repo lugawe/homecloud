@@ -30,11 +30,6 @@ spec:
             capabilities:
               drop:
                 - ALL
-          env:
-            - name: PROMETHEUS_EXTRA_ARGS
-              value: "--storage.tsdb.retention.time=28d"
-            - name: LOKI_EXTRA_ARGS
-              value: "--compactor.retention-enabled=true --limits-config.retention-period=28d"
           envFrom:
             - secretRef:
                 name: monitoring-secrets
