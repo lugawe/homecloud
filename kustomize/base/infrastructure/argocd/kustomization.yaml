@@ -17,7 +17,20 @@ helmCharts:
     includeCRDs: true
     valuesInline:
       configs:
-        cm:
-          kustomize.buildOptions: --enable-helm
         params:
           server.insecure: true
+        cm:
+          kustomize.buildOptions: --enable-helm
+          url: "$argocd-secrets:URL"
+          oidc.config: |
+            name: "Keycloak"
+            issuer: "$argocd-secrets:OIDC_ISSUER"
+            clientID: "argocd"
+            clientSecret: "$argocd-secrets:CLIENT_SECRET"
+            requestedScopes: ["openid", "profile", "email", "groups"]
+          admin.enabled: "false"
+        rbac:
+          policy.default: role:readonly
+          policy.csv: |
+            g, argocd-admins, role:admin
+          scopes: "[groups]"
