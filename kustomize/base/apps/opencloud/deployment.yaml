@@ -27,14 +27,14 @@ spec:
           type: RuntimeDefault
       containers:
         - name: opencloud-app
-          image: opencloudeu/opencloud-rolling:6.0.0
+          image: opencloudeu/opencloud-rolling:6.1.0
           securityContext:
             allowPrivilegeEscalation: false
             capabilities:
               drop:
                 - ALL
-          command: ["/bin/sh"]
-          args: ["-c", "opencloud init || true; opencloud server"]
+          command: [ "/bin/sh" ]
+          args: [ "-c", "opencloud init || true; opencloud server" ]
           envFrom:
             - secretRef:
                 name: opencloud-secrets
