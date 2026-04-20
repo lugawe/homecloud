@@ -25,7 +25,6 @@ helmCharts:
           server.insecure: true
         cm:
           kustomize.buildOptions: --enable-helm
-          url: "TO_BE_PATCHED"
           oidc.config: |
             name: "Keycloak"
             issuer: "$argocd-secrets:OIDC_ISSUER"

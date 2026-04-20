@@ -29,12 +29,6 @@ spec:
       destination:
         server: https://kubernetes.default.svc
         namespace: "{{path.basename}}"
-      ignoreDifferences:
-        - kind: ConfigMap
-          name: argocd-cm
-          group: ""
-          jsonPointers:
-            - /data/url
       syncPolicy:
         automated:
           prune: true
