@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+
+kind: Deployment
+
+metadata:
+  namespace: argocd
+  name: argocd-server
+
+spec:
+  template:
+    spec:
+      initContainers:
+        - name: patch-argocd-url
+          image: alpine/kubectl:1.35.4
+          command:
+            - /bin/sh
+            - -c
+            - |
+              until ARGOCD_URL=$(kubectl get secret -n argocd argocd-secrets -o jsonpath='{.data.URL}' 2>/dev/null | base64 -d) && [ -n "$ARGOCD_URL" ]; do
+                sleep 5
+              done
+              kubectl patch configmap -n argocd argocd-cm --type merge -p "{\"data\":{\"url\":\"${ARGOCD_URL}\"}}"

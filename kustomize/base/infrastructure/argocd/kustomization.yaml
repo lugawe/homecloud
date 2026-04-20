@@ -7,6 +7,10 @@ namespace: argocd
 resources:
   - namespace.yaml
   - secrets.yaml
+  - init/cm-rbac.yaml
+
+patches:
+  - path: init/cm-patch.yaml
 
 helmCharts:
   - namespace: argocd
@@ -21,7 +25,7 @@ helmCharts:
           server.insecure: true
         cm:
           kustomize.buildOptions: --enable-helm
-          # url: "$argocd-secrets:URL"
+          url: "URL"
           oidc.config: |
             name: "Keycloak"
             issuer: "$argocd-secrets:OIDC_ISSUER"
