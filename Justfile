@@ -1,14 +1,14 @@
 # Utilities for using homecloud
 
-apply-all: apply-crds apply
+apply: apply-namespaces-and-crds apply-all
 
-apply-crds:
+apply-namespaces-and-crds:
     kustomize build --enable-helm kustomize/overlays/homecloud | \
         yq 'select(.kind == "Namespace" or .kind == "CustomResourceDefinition")' | \
         kubectl apply --server-side --force-conflicts -f -
     kubectl wait --for=condition=established crd --all --timeout=60s
 
-apply:
+apply-all:
     kustomize build --enable-helm kustomize/overlays/homecloud | kubectl apply --server-side --force-conflicts -f -
 
 test:
