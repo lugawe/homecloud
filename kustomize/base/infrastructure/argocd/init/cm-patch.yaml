@@ -10,7 +10,7 @@ spec:
   template:
     spec:
       initContainers:
-        - name: patch-argocd-url
+        - name: patch-argocd-configmap
           image: alpine/kubectl:1.35.4
           command:
             - /bin/sh
