@@ -29,7 +29,7 @@ spec:
           type: RuntimeDefault
       containers:
         - name: alloy
-          image: grafana/alloy:v1.15.0
+          image: grafana/alloy:v1.15.1
           securityContext:
             allowPrivilegeEscalation: false
             capabilities:
