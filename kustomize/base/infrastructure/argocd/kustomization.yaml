@@ -9,8 +9,8 @@ resources:
   - secrets.yaml
   - init/cm-rbac.yaml
 
-patches:
-  - path: init/cm-patch.yaml
+# patches:
+#   - path: init/cm-patch.yaml
 
 helmCharts:
   - namespace: argocd
