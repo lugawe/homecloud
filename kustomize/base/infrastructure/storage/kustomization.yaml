@@ -9,4 +9,3 @@ resources:
   - secrets.yaml
   - longhorn
   - garage
-  - rustfs

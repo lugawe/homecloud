@@ -3,7 +3,7 @@ set -euo pipefail
 
 DEST=".backups"
 
-kubectl port-forward -n storage svc/rustfs 3333:9000 &>/dev/null &
+kubectl port-forward -n storage svc/garage 3333:3900 &>/dev/null &
 PF_PID=$!
 trap 'rc=$?; kill "$PF_PID" 2>/dev/null; wait "$PF_PID" 2>/dev/null || true; exit $rc' EXIT
 
@@ -19,6 +19,6 @@ done
 
 echo "Copying backup..."
 
-rclone --progress copy rustfs:longhorn-backups "$DEST"
+rclone --progress copy garage:longhorn-backups "$DEST"
 
 echo "Backup downloaded into $DEST."
