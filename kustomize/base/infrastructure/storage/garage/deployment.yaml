@@ -34,6 +34,17 @@ spec:
             capabilities:
               drop:
                 - ALL
+          env:
+            - name: GARAGE_RPC_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: storage-secrets
+                  key: GARAGE_RPC_SECRET
+            - name: GARAGE_ADMIN_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: storage-secrets
+                  key: GARAGE_ADMIN_TOKEN
           volumeMounts:
             - name: garage-storage
               mountPath: /var/lib/garage/meta
