@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+
+kind: Deployment
+
+metadata:
+  namespace: storage
+  name: garage
+  labels:
+    app: garage
+
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: garage
+  template:
+    metadata:
+      labels:
+        app: garage
+    spec:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+        - name: garage
+          image: dxflrs/garage:v2.3.0
+          command: [ "/garage", "server" ]
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
+          volumeMounts:
+            - name: garage-storage
+              mountPath: /var/lib/garage/meta
+              subPath: meta
+            - name: garage-storage
+              mountPath: /var/lib/garage/data
+              subPath: data
+            - name: garage-config
+              mountPath: /etc/garage.toml
+              subPath: garage.toml
+      volumes:
+        - name: garage-storage
+          persistentVolumeClaim:
+            claimName: garage-pvc
+        - name: garage-config
+          configMap:
+            name: garage-configmap
