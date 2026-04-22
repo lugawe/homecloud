@@ -35,9 +35,28 @@ spec:
                 - ALL
           command: [ "/bin/sh" ]
           args: [ "-c", "opencloud init || true; opencloud server" ]
-          envFrom:
-            - secretRef:
-                name: opencloud-secrets
+          env:
+            - name: OC_INSECURE
+              value: "true"
+            - name: OC_URL
+              valueFrom:
+                secretKeyRef:
+                  name: opencloud-secrets
+                  key: OC_URL
+            - name: OC_OIDC_ISSUER
+              valueFrom:
+                secretKeyRef:
+                  name: opencloud-secrets
+                  key: OC_OIDC_ISSUER
+            - name: WEB_OIDC_AUTHORITY
+              valueFrom:
+                secretKeyRef:
+                  name: opencloud-secrets
+                  key: WEB_OIDC_AUTHORITY
+            - name: WEB_OIDC_CLIENT_ID
+              value: opencloud
+            - name: PROXY_AUTOPROVISION_ACCOUNTS
+              value: "true"
           volumeMounts:
             - name: opencloud-app-storage
               mountPath: /etc/opencloud
