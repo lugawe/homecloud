@@ -28,7 +28,14 @@ spec:
       containers:
         - name: garage
           image: dxflrs/garage:v2.3.0
-          command: [ "/garage", "server" ]
+          command:
+            [
+              "/garage",
+              "server",
+              "--single-node",
+              "--default-access-key",
+              "--default-bucket",
+            ]
           securityContext:
             allowPrivilegeEscalation: false
             capabilities:
@@ -45,6 +52,18 @@ spec:
                 secretKeyRef:
                   name: storage-secrets
                   key: GARAGE_ADMIN_TOKEN
+            - name: GARAGE_DEFAULT_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: storage-secrets
+                  key: AWS_ACCESS_KEY_ID
+            - name: GARAGE_DEFAULT_SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: storage-secrets
+                  key: AWS_SECRET_ACCESS_KEY
+            - name: GARAGE_DEFAULT_BUCKET
+              value: longhorn-backups
           volumeMounts:
             - name: garage-storage
               mountPath: /var/lib/garage/meta
