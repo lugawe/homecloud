@@ -39,10 +39,8 @@ spec:
               value: postgres
             - name: KC_DB_URL
               value: jdbc:postgresql://keycloak-database:5432/keycloak
-            - name: KC_DB_TLS_MODE
-              value: verify-server
             - name: KC_DB_URL_PROPERTIES
-              value: "?sslrootcert=/tls/ca.crt"
+              value: "?sslmode=verify-full&sslrootcert=/tls/ca.crt"
             - name: KC_DB_USERNAME
               valueFrom:
                 secretKeyRef:
