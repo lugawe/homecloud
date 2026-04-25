@@ -16,4 +16,5 @@ helmCharts:
         enabled: false
       defaultVaultConnection:
         enabled: true
-        address: "http://vault.secrets-system.svc.cluster.local:8200"
+        address: "https://vault.secrets-system.svc.cluster.local:8200"
+        caCertSecret: "vault-tls"

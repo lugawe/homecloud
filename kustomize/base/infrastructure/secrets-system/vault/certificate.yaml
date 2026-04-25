@@ -1,0 +1,27 @@
+apiVersion: cert-manager.io/v1
+
+kind: Certificate
+
+metadata:
+  namespace: secrets-system
+  name: vault-tls
+
+spec:
+  secretName: vault-tls
+  duration: 8760h
+  renewBefore: 720h
+  subject:
+    organizations:
+      - homecloud
+  commonName: vault.secrets-system.svc.cluster.local
+  dnsNames:
+    - vault
+    - vault.secrets-system
+    - vault.secrets-system.svc
+    - vault.secrets-system.svc.cluster.local
+  ipAddresses:
+    - 127.0.0.1
+  issuerRef:
+    kind: ClusterIssuer
+    group: cert-manager.io
+    name: homecloud-ca

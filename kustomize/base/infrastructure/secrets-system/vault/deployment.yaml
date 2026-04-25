@@ -34,16 +34,22 @@ spec:
             capabilities:
               drop:
                 - ALL
-          command: ["vault"]
-          args: ["server", "-config=/vault/config/vault.hcl"]
+          command: [ "vault" ]
+          args: [ "server", "-config=/vault/config/vault.hcl" ]
           env:
             - name: VAULT_ADDR
-              value: "http://127.0.0.1:8200"
+              value: "https://127.0.0.1:8200"
+            - name: VAULT_CACERT
+              value: "/vault/tls/ca.crt"
           volumeMounts:
             - name: vault-config
               mountPath: /vault/config
+              readOnly: true
             - name: vault-storage
               mountPath: /vault/data
+            - name: vault-tls
+              mountPath: /vault/tls
+              readOnly: true
       volumes:
         - name: vault-config
           configMap:
@@ -51,3 +57,6 @@ spec:
         - name: vault-storage
           persistentVolumeClaim:
             claimName: vault-pvc
+        - name: vault-tls
+          secret:
+            secretName: vault-tls
