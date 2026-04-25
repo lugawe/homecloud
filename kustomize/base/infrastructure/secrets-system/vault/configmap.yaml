@@ -14,6 +14,10 @@ data:
       address       = "0.0.0.0:8200"
       tls_cert_file = "/vault/tls/tls.crt"
       tls_key_file  = "/vault/tls/tls.key"
+
+      telemetry {
+        unauthenticated_metrics_access = true
+      }
     }
 
     storage "file" {
@@ -21,9 +25,8 @@ data:
     }
 
     telemetry {
-      prometheus_retention_time      = "120s"
-      disable_hostname               = true
-      unauthenticated_metrics_access = true
+      prometheus_retention_time = "120s"
+      disable_hostname          = true
     }
 
     disable_mlock = true
