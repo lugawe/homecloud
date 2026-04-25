@@ -14,6 +14,9 @@ apply-all:
 test:
     kustomize build --enable-helm kustomize/overlays/homecloud | kubectl apply --server-side --dry-run=server -f -
 
+sync:
+    kubectl annotate applications -n argocd --all argocd.argoproj.io/refresh=hard --overwrite
+
 nuke namespace:
     kubectl delete all --all -n {{ namespace }}
     kubectl delete pvc --all -n {{ namespace }}
