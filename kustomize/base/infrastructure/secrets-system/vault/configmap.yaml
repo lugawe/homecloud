@@ -20,6 +20,12 @@ data:
       path = "/vault/data"
     }
 
+    telemetry {
+      prometheus_retention_time      = "120s"
+      disable_hostname               = true
+      unauthenticated_metrics_access = true
+    }
+
     disable_mlock = true
 
     ui = false
