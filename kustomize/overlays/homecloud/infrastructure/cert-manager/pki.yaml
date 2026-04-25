@@ -1,0 +1,40 @@
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: selfsigned
+spec:
+  selfSigned: {}
+
+---
+
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  namespace: cert-manager
+  name: homecloud-ca
+spec:
+  isCA: true
+  commonName: homecloud-ca
+  secretName: homecloud-ca
+  duration: 17520h
+  renewBefore: 720h
+  subject:
+    organizations:
+      - homecloud
+  privateKey:
+    algorithm: ECDSA
+    size: 256
+  issuerRef:
+    kind: ClusterIssuer
+    group: cert-manager.io
+    name: selfsigned
+
+---
+
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: homecloud-ca
+spec:
+  ca:
+    secretName: homecloud-ca
