@@ -1,0 +1,25 @@
+apiVersion: cert-manager.io/v1
+
+kind: Certificate
+
+metadata:
+  namespace: keycloak
+  name: keycloak-database-tls
+
+spec:
+  secretName: keycloak-database-tls
+  duration: 8760h
+  renewBefore: 720h
+  subject:
+    organizations:
+      - homecloud
+  commonName: keycloak-database.keycloak.svc.cluster.local
+  dnsNames:
+    - keycloak-database
+    - keycloak-database.keycloak
+    - keycloak-database.keycloak.svc
+    - keycloak-database.keycloak.svc.cluster.local
+  issuerRef:
+    kind: ClusterIssuer
+    group: cert-manager.io
+    name: homecloud-ca
