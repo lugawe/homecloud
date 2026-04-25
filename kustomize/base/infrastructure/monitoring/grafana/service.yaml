@@ -25,6 +25,9 @@ spec:
     - name: loki
       port: 3100
       targetPort: 3100
+    - name: tempo
+      port: 3200
+      targetPort: 3200
     - name: prometheus
       port: 9090
       targetPort: 9090
