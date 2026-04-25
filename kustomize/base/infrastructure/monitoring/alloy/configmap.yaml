@@ -7,7 +7,7 @@ metadata:
   name: alloy-configmap
 
 data:
-  config.alloy: |
+  logs.alloy: |
     discovery.kubernetes "pods" {
       role = "pod"
     }
@@ -58,42 +58,33 @@ data:
       }
     }
 
-    discovery.kubernetes "node_exporter_endpoints" {
-      role = "endpoints"
-    }
-
-    discovery.relabel "node_exporter" {
-      targets = discovery.kubernetes.node_exporter_endpoints.targets
-
-      rule {
-        source_labels = ["__meta_kubernetes_service_label_app"]
-        regex         = "node-exporter"
-        action        = "keep"
-      }
-
-      rule {
-        source_labels = ["__meta_kubernetes_endpoint_node_name"]
-        target_label  = "node"
-      }
-
-      rule {
-        source_labels = ["__meta_kubernetes_endpoint_node_name"]
-        target_label  = "instance"
-      }
-
-      rule {
-        target_label = "job"
-        replacement  = "node-exporter"
-      }
-    }
-
-    prometheus.scrape "node_exporter" {
-      targets    = discovery.relabel.node_exporter.output
-      forward_to = [prometheus.remote_write.default.receiver]
-    }
-
+  metrics.alloy: |
     prometheus.remote_write "default" {
       endpoint {
         url = "http://grafana.monitoring.svc.cluster.local:9090/api/v1/write"
       }
+    }
+
+  metrics-node-exporter.alloy: |
+    prometheus.scrape "node_exporter" {
+      targets = [{
+        __address__ = "node-exporter.monitoring.svc.cluster.local:9100",
+        job         = "node-exporter",
+      }]
+      forward_to = [prometheus.remote_write.default.receiver]
+    }
+
+  metrics-vault.alloy: |
+    prometheus.scrape "vault" {
+      targets = [{
+        __address__ = "vault.secrets-system.svc.cluster.local:8200",
+        job         = "vault",
+      }]
+      metrics_path = "/v1/sys/metrics"
+      params       = { format = ["prometheus"] }
+      scheme       = "https"
+      tls_config {
+        insecure_skip_verify = true
+      }
+      forward_to = [prometheus.remote_write.default.receiver]
     }

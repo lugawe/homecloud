@@ -35,7 +35,7 @@ spec:
             capabilities:
               drop:
                 - ALL
-          args: ["run", "--storage.path=/tmp/alloy", "/etc/alloy/config.alloy"]
+          args: [ "run", "--storage.path=/tmp/alloy", "/etc/alloy" ]
           volumeMounts:
             - name: alloy-config
               mountPath: /etc/alloy
