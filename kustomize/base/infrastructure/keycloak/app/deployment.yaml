@@ -33,12 +33,16 @@ spec:
             capabilities:
               drop:
                 - ALL
-          args: ["start"]
+          args: [ "start" ]
           env:
             - name: KC_DB
               value: postgres
             - name: KC_DB_URL
               value: jdbc:postgresql://keycloak-database:5432/keycloak
+            - name: KC_DB_TLS_MODE
+              value: verify-server
+            - name: KC_DB_URL_PROPERTIES
+              value: "?sslrootcert=/tls/ca.crt"
             - name: KC_DB_USERNAME
               valueFrom:
                 secretKeyRef:
@@ -52,3 +56,14 @@ spec:
           envFrom:
             - secretRef:
                 name: keycloak-secrets
+          volumeMounts:
+            - name: keycloak-database-tls
+              mountPath: /tls
+              readOnly: true
+      volumes:
+        - name: keycloak-database-tls
+          secret:
+            secretName: keycloak-database-tls
+            items:
+              - key: ca.crt
+                path: ca.crt
