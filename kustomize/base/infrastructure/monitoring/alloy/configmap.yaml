@@ -102,3 +102,13 @@ data:
       bearer_token_file = "/var/run/secrets/kubernetes.io/serviceaccount/token"
       forward_to = [prometheus.remote_write.default.receiver]
     }
+
+  metrics-keycloak.alloy: |
+    prometheus.scrape "keycloak" {
+      targets = [{
+        __address__ = "keycloak.keycloak.svc.cluster.local:9000",
+        job         = "keycloak",
+      }]
+      metrics_path = "/metrics"
+      forward_to   = [prometheus.remote_write.default.receiver]
+    }

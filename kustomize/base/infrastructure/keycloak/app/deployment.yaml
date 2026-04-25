@@ -51,6 +51,8 @@ spec:
                 secretKeyRef:
                   name: keycloak-secrets
                   key: POSTGRES_PASSWORD
+            - name: KC_METRICS_ENABLED
+              value: "true"
           envFrom:
             - secretRef:
                 name: keycloak-secrets
