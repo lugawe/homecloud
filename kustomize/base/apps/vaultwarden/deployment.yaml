@@ -33,9 +33,35 @@ spec:
             capabilities:
               drop:
                 - ALL
-          envFrom:
-            - secretRef:
-                name: vaultwarden-secrets
+          env:
+            # --- Server ---
+            - name: DOMAIN
+              valueFrom:
+                secretKeyRef:
+                  name: vaultwarden-secrets
+                  key: DOMAIN
+            - name: SIGNUPS_ALLOWED
+              value: "false"
+            # --- SSO ---
+            - name: SSO_ENABLED
+              value: "true"
+            - name: SSO_ONLY
+              value: "true"
+            - name: SSO_AUTHORITY
+              valueFrom:
+                secretKeyRef:
+                  name: vaultwarden-secrets
+                  key: SSO_AUTHORITY
+            - name: SSO_CLIENT_ID
+              valueFrom:
+                secretKeyRef:
+                  name: vaultwarden-secrets
+                  key: SSO_CLIENT_ID
+            - name: SSO_CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: vaultwarden-secrets
+                  key: SSO_CLIENT_SECRET
           volumeMounts:
             - name: vaultwarden-app-storage
               mountPath: /data
