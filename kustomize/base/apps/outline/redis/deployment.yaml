@@ -33,7 +33,4 @@ spec:
             capabilities:
               drop:
                 - ALL
-          args: ["redis-server"]
-          envFrom:
-            - secretRef:
-                name: outline-secrets
+          args: [ "redis-server" ]

@@ -33,9 +33,16 @@ spec:
             capabilities:
               drop:
                 - ALL
-          envFrom:
-            - secretRef:
-                name: outline-secrets
+          env:
+            - name: POSTGRES_DB
+              value: "outline"
+            - name: POSTGRES_USER
+              value: "outline"
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: outline-secrets
+                  key: POSTGRES_PASSWORD
           volumeMounts:
             - name: outline-database-storage
               mountPath: /var/lib/postgresql
