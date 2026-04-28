@@ -24,8 +24,6 @@ helmCharts:
             protocols:
               grpc:
                 endpoint: 0.0.0.0:4317
-              http:
-                endpoint: 0.0.0.0:4318
         processors:
           memory_limiter:
             check_interval: 1s
@@ -35,7 +33,7 @@ helmCharts:
             send_batch_size: 10000
             timeout: 10s
         exporters:
-          otlp:
+          otlp_grpc:
             endpoint: grafana.monitoring.svc.cluster.local:4317
             tls:
               insecure: true
@@ -44,15 +42,15 @@ helmCharts:
             metrics:
               receivers: [ otlp ]
               processors: [ memory_limiter, batch ]
-              exporters: [ otlp ]
+              exporters: [ otlp_grpc ]
             logs:
               receivers: [ otlp ]
               processors: [ memory_limiter, batch ]
-              exporters: [ otlp ]
+              exporters: [ otlp_grpc ]
             traces:
               receivers: [ otlp ]
               processors: [ memory_limiter, batch ]
-              exporters: [ otlp ]
+              exporters: [ otlp_grpc ]
 
   - namespace: monitoring
     releaseName: opentelemetry-operator
