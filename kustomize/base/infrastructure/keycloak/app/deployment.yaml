@@ -17,6 +17,8 @@ spec:
     metadata:
       labels:
         app: keycloak
+      annotations:
+        instrumentation.opentelemetry.io/inject-java: "monitoring/otel-instrumentation"
     spec:
       securityContext:
         runAsNonRoot: true
