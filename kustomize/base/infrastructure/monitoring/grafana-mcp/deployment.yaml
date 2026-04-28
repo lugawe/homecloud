@@ -28,7 +28,7 @@ spec:
       containers:
         - name: grafana-mcp
           image: grafana/mcp-grafana:0.12.1
-          args: [ "--transport", "streamable-http", "--port", "8000" ]
+          args: [ "--address", "0.0.0.0:8000", "--transport", "streamable-http" ]
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
