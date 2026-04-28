@@ -12,6 +12,7 @@ resources:
   - grafana/service.yaml
   - grafana-mcp/deployment.yaml
   - grafana-mcp/service.yaml
+  - opentelemetry
   - alloy/configmap.yaml
   - alloy/rbac.yaml
   - alloy/daemonset.yaml
