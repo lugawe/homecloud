@@ -80,6 +80,7 @@ data:
         __address__ = "grafana-mcp.monitoring.svc.cluster.local:8000",
         job         = "grafana-mcp",
       }]
+      metrics_path = "/metrics"
       forward_to = [prometheus.remote_write.default.receiver]
     }
 
