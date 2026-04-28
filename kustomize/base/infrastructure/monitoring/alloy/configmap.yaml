@@ -74,6 +74,15 @@ data:
       forward_to = [prometheus.remote_write.default.receiver]
     }
 
+  metrics-grafana-mcp.alloy: |
+    prometheus.scrape "grafana-mcp" {
+      targets = [{
+        __address__ = "grafana-mcp.monitoring.svc.cluster.local:8000",
+        job         = "grafana-mcp",
+      }]
+      forward_to = [prometheus.remote_write.default.receiver]
+    }
+
   metrics-vault.alloy: |
     prometheus.scrape "vault" {
       targets = [{
