@@ -74,16 +74,6 @@ data:
       forward_to = [prometheus.remote_write.default.receiver]
     }
 
-  metrics-grafana-mcp.alloy: |
-    prometheus.scrape "grafana-mcp" {
-      targets = [{
-        __address__ = "grafana-mcp.monitoring.svc.cluster.local:8000",
-        job         = "grafana-mcp",
-      }]
-      metrics_path = "/metrics"
-      forward_to = [prometheus.remote_write.default.receiver]
-    }
-
   metrics-vault.alloy: |
     prometheus.scrape "vault" {
       targets = [{
@@ -121,4 +111,36 @@ data:
       }]
       metrics_path = "/metrics"
       forward_to   = [prometheus.remote_write.default.receiver]
+    }
+
+  metrics-grafana-mcp.alloy: |
+    prometheus.scrape "grafana_mcp" {
+      targets = [{
+        __address__ = "grafana-mcp.monitoring.svc.cluster.local:8000",
+        job         = "grafana-mcp",
+      }]
+      metrics_path = "/metrics"
+      forward_to = [prometheus.remote_write.default.receiver]
+    }
+
+  otel.alloy: |
+    otelcol.receiver.otlp "default" {
+      grpc {
+        endpoint = "0.0.0.0:4317"
+      }
+
+      output {
+        metrics = [otelcol.exporter.otlp_grpc.grafana.input]
+        logs    = [otelcol.exporter.otlp_grpc.grafana.input]
+        traces  = [otelcol.exporter.otlp_grpc.grafana.input]
+      }
+    }
+
+    otelcol.exporter.otlp_grpc "grafana" {
+      client {
+        endpoint = "grafana.monitoring.svc.cluster.local:4317"
+        tls {
+          insecure = true
+        }
+      }
     }
