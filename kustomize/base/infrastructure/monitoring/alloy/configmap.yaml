@@ -130,13 +130,13 @@ data:
       }
 
       output {
-        metrics = [otelcol.exporter.otlp_grpc.grafana.input]
-        logs    = [otelcol.exporter.otlp_grpc.grafana.input]
-        traces  = [otelcol.exporter.otlp_grpc.grafana.input]
+        metrics = [otelcol.exporter.otlp.grafana.input]
+        logs    = [otelcol.exporter.otlp.grafana.input]
+        traces  = [otelcol.exporter.otlp.grafana.input]
       }
     }
 
-    otelcol.exporter.otlp_grpc "grafana" {
+    otelcol.exporter.otlp "grafana" {
       client {
         endpoint = "grafana.monitoring.svc.cluster.local:4317"
         tls {
