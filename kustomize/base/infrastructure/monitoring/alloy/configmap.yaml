@@ -7,6 +7,11 @@ metadata:
   name: alloy-configmap
 
 data:
+  config.alloy: |
+    tracing {
+      write_to = [otelcol.exporter.otlp.grafana.input]
+    }
+
   logs.alloy: |
     discovery.kubernetes "pods" {
       role = "pod"

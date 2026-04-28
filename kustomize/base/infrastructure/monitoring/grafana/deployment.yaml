@@ -30,6 +30,11 @@ spec:
             capabilities:
               drop:
                 - ALL
+          env:
+            - name: GF_TRACING_OPENTELEMETRY_OTLP_ADDRESS
+              value: "alloy.monitoring.svc.cluster.local:4317"
+            - name: GF_TRACING_OPENTELEMETRY_OTLP_PROPAGATION
+              value: "w3c"
           envFrom:
             - secretRef:
                 name: monitoring-secrets

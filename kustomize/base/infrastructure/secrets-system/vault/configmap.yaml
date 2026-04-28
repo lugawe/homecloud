@@ -27,6 +27,8 @@ data:
     telemetry {
       prometheus_retention_time = "120s"
       disable_hostname          = true
+      oteltraces_type           = "otlpgrpc"
+      oteltraces_endpoint       = "alloy.monitoring.svc.cluster.local:4317"
     }
 
     disable_mlock = true
