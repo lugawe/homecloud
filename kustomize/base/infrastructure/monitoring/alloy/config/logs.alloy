@@ -6,6 +6,11 @@ discovery.relabel "pods" {
   targets = discovery.kubernetes.pods.targets
 
   rule {
+    source_labels = ["__meta_kubernetes_pod_node_name"]
+    target_label  = "node"
+  }
+
+  rule {
     source_labels = ["__meta_kubernetes_namespace"]
     target_label  = "namespace"
   }
@@ -21,17 +26,12 @@ discovery.relabel "pods" {
   }
 
   rule {
-    source_labels = ["__meta_kubernetes_pod_node_name"]
-    target_label  = "node"
-  }
-
-  rule {
     source_labels = ["__meta_kubernetes_pod_label_app"]
     target_label  = "app"
   }
 
   rule {
-    source_labels = ["__meta_kubernetes_namespace", "__meta_kubernetes_pod_label_app"]
+    source_labels = ["namespace", "app"]
     separator     = "/"
     target_label  = "job"
   }
