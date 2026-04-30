@@ -1,0 +1,23 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+
+kind: Kustomization
+
+namespace: monitoring
+
+resources:
+  - grafana/configmap.yaml
+  - grafana/deployment.yaml
+  - grafana/pvc.yaml
+  - grafana/service.yaml
+  - loki/configmap.yaml
+  - loki/deployment.yaml
+  - loki/pvc.yaml
+  - loki/service.yaml
+  - mimir/configmap.yaml
+  - mimir/deployment.yaml
+  - mimir/pvc.yaml
+  - mimir/service.yaml
+  - tempo/configmap.yaml
+  - tempo/deployment.yaml
+  - tempo/pvc.yaml
+  - tempo/service.yaml

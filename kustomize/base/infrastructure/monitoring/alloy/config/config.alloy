@@ -1,0 +1,3 @@
+tracing {
+  write_to = [otelcol.exporter.otlp.tempo.input]
+}

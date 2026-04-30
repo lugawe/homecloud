@@ -19,12 +19,15 @@ spec:
         app: grafana
     spec:
       securityContext:
-        runAsNonRoot: false
+        runAsNonRoot: true
+        runAsUser: 472
+        runAsGroup: 472
+        fsGroup: 472
         seccompProfile:
           type: RuntimeDefault
       containers:
         - name: grafana
-          image: grafana/otel-lgtm:0.26.0
+          image: grafana/grafana:13.0.1
           securityContext:
             allowPrivilegeEscalation: false
             capabilities:
@@ -40,8 +43,13 @@ spec:
                 name: monitoring-secrets
           volumeMounts:
             - name: grafana-storage
-              mountPath: /data
+              mountPath: /var/lib/grafana
+            - name: grafana-datasources
+              mountPath: /etc/grafana/provisioning/datasources
       volumes:
         - name: grafana-storage
           persistentVolumeClaim:
             claimName: grafana-pvc
+        - name: grafana-datasources
+          configMap:
+            name: grafana-datasources

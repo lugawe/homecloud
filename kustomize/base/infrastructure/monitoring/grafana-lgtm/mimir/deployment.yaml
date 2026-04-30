@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+
+kind: Deployment
+
+metadata:
+  namespace: monitoring
+  name: mimir
+  labels:
+    app: mimir
+
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mimir
+  template:
+    metadata:
+      labels:
+        app: mimir
+    spec:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 10001
+        runAsGroup: 10001
+        fsGroup: 10001
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+        - name: mimir
+          image: grafana/mimir:3.0.6
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
+          args: [ "-config.file=/etc/mimir/mimir.yaml" ]
+          volumeMounts:
+            - name: mimir-storage
+              mountPath: /data
+            - name: mimir-config
+              mountPath: /etc/mimir
+      volumes:
+        - name: mimir-storage
+          persistentVolumeClaim:
+            claimName: mimir-pvc
+        - name: mimir-config
+          configMap:
+            name: mimir-configmap

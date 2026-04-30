@@ -1,0 +1,58 @@
+prometheus.remote_write "default" {
+  endpoint {
+    url = "http://mimir.monitoring.svc.cluster.local:8080/api/v1/push"
+  }
+}
+
+prometheus.scrape "node_exporter" {
+  targets = [{
+    __address__ = "node-exporter.monitoring.svc.cluster.local:9100",
+    job         = "node-exporter",
+  }]
+  forward_to = [prometheus.remote_write.default.receiver]
+}
+
+prometheus.scrape "keycloak" {
+  targets = [{
+    __address__ = "keycloak.keycloak.svc.cluster.local:9000",
+    job         = "keycloak",
+  }]
+  metrics_path = "/metrics"
+  forward_to   = [prometheus.remote_write.default.receiver]
+}
+
+prometheus.scrape "grafana_mcp" {
+  targets = [{
+    __address__ = "grafana-mcp.monitoring.svc.cluster.local:8000",
+    job         = "grafana-mcp",
+  }]
+  metrics_path = "/metrics"
+  forward_to   = [prometheus.remote_write.default.receiver]
+}
+
+prometheus.scrape "vault" {
+  targets = [{
+    __address__ = "vault.secrets-system.svc.cluster.local:8200",
+    job         = "vault",
+  }]
+  metrics_path = "/v1/sys/metrics"
+  params       = { format = ["prometheus"] }
+  scheme       = "https"
+  tls_config {
+    insecure_skip_verify = true
+  }
+  forward_to = [prometheus.remote_write.default.receiver]
+}
+
+prometheus.scrape "vso" {
+  targets = [{
+    __address__ = "vault-secrets-operator-metrics-service.secrets-system.svc.cluster.local:8443",
+    job         = "vault-secrets-operator",
+  }]
+  scheme = "https"
+  tls_config {
+    insecure_skip_verify = true
+  }
+  bearer_token_file = "/var/run/secrets/kubernetes.io/serviceaccount/token"
+  forward_to = [prometheus.remote_write.default.receiver]
+}

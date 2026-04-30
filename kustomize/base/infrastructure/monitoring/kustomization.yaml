@@ -7,15 +7,8 @@ namespace: monitoring
 resources:
   - namespace.yaml
   - secrets.yaml
-  - grafana/deployment.yaml
-  - grafana/pvc.yaml
-  - grafana/service.yaml
-  - grafana-mcp/deployment.yaml
-  - grafana-mcp/service.yaml
+  - grafana-lgtm
+  - grafana-mcp
   - opentelemetry
-  - alloy/configmap.yaml
-  - alloy/rbac.yaml
-  - alloy/daemonset.yaml
-  - alloy/service.yaml
-  - node-exporter/daemonset.yaml
-  - node-exporter/service.yaml
+  - alloy
+  - node-exporter
