@@ -29,7 +29,9 @@ data:
 
     compactor:
       data_dir: /data/mimir/compactor
-      blocks_retention_period: 336h
+
+    limits:
+      compactor_blocks_retention_period: 336h
 
     ingester:
       ring:
