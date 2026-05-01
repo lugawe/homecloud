@@ -48,3 +48,12 @@ singleBinary:
     enabled: true
     storageClass: longhorn
     size: 10Gi
+
+backend:
+  replicas: 0
+
+read:
+  replicas: 0
+
+write:
+  replicas: 0

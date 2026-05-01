@@ -17,5 +17,4 @@ configMapGenerator:
     files:
       - config/config.alloy
       - config/logs.alloy
-      - config/metrics.alloy
       - config/otel.alloy
