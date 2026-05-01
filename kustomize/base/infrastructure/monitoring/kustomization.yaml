@@ -11,4 +11,3 @@ resources:
   - grafana-mcp
   - opentelemetry
   - alloy
-  - node-exporter
