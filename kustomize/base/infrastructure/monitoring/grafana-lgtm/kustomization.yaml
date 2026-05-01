@@ -4,20 +4,31 @@ kind: Kustomization
 
 namespace: monitoring
 
-resources:
-  - grafana/configmap.yaml
-  - grafana/deployment.yaml
-  - grafana/pvc.yaml
-  - grafana/service.yaml
-  - loki/configmap.yaml
-  - loki/deployment.yaml
-  - loki/pvc.yaml
-  - loki/service.yaml
-  - mimir/configmap.yaml
-  - mimir/deployment.yaml
-  - mimir/pvc.yaml
-  - mimir/service.yaml
-  - tempo/configmap.yaml
-  - tempo/deployment.yaml
-  - tempo/pvc.yaml
-  - tempo/service.yaml
+helmCharts:
+  - namespace: monitoring
+    releaseName: grafana
+    repo: https://grafana-community.github.io/helm-charts
+    name: grafana
+    version: 12.3.0
+    valuesFile: values-grafana.yaml
+
+  - namespace: monitoring
+    releaseName: loki
+    repo: https://grafana-community.github.io/helm-charts
+    name: loki
+    version: 13.5.0
+    valuesFile: values-loki.yaml
+
+  - namespace: monitoring
+    releaseName: tempo
+    repo: https://grafana-community.github.io/helm-charts
+    name: tempo
+    version: 2.1.0
+    valuesFile: values-tempo.yaml
+
+  - namespace: monitoring
+    releaseName: prometheus
+    repo: https://prometheus-community.github.io/helm-charts
+    name: prometheus
+    version: 29.4.0
+    valuesFile: values-prometheus.yaml

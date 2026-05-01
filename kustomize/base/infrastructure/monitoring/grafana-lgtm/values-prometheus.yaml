@@ -1,0 +1,29 @@
+server:
+  securityContext:
+    seccompProfile:
+      type: RuntimeDefault
+
+  containerSecurityContext:
+    allowPrivilegeEscalation: false
+    capabilities:
+      drop: [ ALL ]
+
+  persistentVolume:
+    enabled: true
+    storageClass: longhorn
+    size: 10Gi
+
+  retention: "14d"
+
+  extraFlags:
+    - "web.enable-lifecycle"
+    - "web.enable-remote-write-receiver"
+
+alertmanager:
+  enabled: false
+
+prometheus-node-exporter:
+  enabled: false
+
+kube-state-metrics:
+  enabled: false

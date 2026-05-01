@@ -1,0 +1,50 @@
+deploymentMode: SingleBinary
+
+loki:
+  podSecurityContext:
+    seccompProfile:
+      type: RuntimeDefault
+
+  containerSecurityContext:
+    allowPrivilegeEscalation: false
+    capabilities:
+      drop: [ ALL ]
+
+  commonConfig:
+    replication_factor: 1
+
+  storage:
+    type: filesystem
+
+  schemaConfig:
+    configs:
+      - from: "2020-10-24"
+        store: tsdb
+        object_store: filesystem
+        schema: v13
+        index:
+          prefix: index_
+          period: 24h
+
+  compactor:
+    retention_enabled: true
+    delete_request_store: filesystem
+
+  limits_config:
+    retention_period: 336h
+
+  query_range:
+    results_cache:
+      cache:
+        embedded_cache:
+          enabled: true
+          max_size_mb: 100
+
+  auth_enabled: false
+
+singleBinary:
+  replicas: 1
+  persistence:
+    enabled: true
+    storageClass: longhorn
+    size: 10Gi
