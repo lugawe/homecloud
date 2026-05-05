@@ -27,7 +27,7 @@ spec:
           type: RuntimeDefault
       containers:
         - name: outline-app
-          image: outlinewiki/outline:1.7.0
+          image: outlinewiki/outline:1.7.1
           securityContext:
             allowPrivilegeEscalation: false
             capabilities:
