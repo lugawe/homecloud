@@ -31,7 +31,7 @@ spec:
           type: RuntimeDefault
       containers:
         - name: grafana-mcp
-          image: grafana/mcp-grafana:0.13.1
+          image: grafana/mcp-grafana:0.14.0
           args:
             [
               "--address",
