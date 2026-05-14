@@ -12,7 +12,7 @@ helmCharts:
     releaseName: opentelemetry-operator
     repo: https://open-telemetry.github.io/opentelemetry-helm-charts
     name: opentelemetry-operator
-    version: 0.112.2
+    version: 0.113.0
     includeCRDs: true
     valuesInline:
       manager:
