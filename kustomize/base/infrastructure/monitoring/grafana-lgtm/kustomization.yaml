@@ -23,7 +23,7 @@ helmCharts:
     releaseName: tempo
     repo: https://grafana-community.github.io/helm-charts
     name: tempo
-    version: 2.1.0
+    version: 2.1.2
     valuesFile: values-tempo.yaml
 
   - namespace: monitoring
