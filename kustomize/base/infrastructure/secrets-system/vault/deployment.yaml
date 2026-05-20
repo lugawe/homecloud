@@ -28,7 +28,7 @@ spec:
           type: RuntimeDefault
       containers:
         - name: vault
-          image: hashicorp/vault:2.0.0
+          image: hashicorp/vault:2.0.1
           securityContext:
             allowPrivilegeEscalation: false
             capabilities:
