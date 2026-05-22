@@ -31,6 +31,4 @@ data:
 
     api_addr = "https://vault.secrets-system.svc.cluster.local:8200"
 
-    disable_mlock = true
-
     ui = false
