@@ -3,7 +3,7 @@ set -euo pipefail
 
 SRC=".backups"
 
-kubectl port-forward -n storage svc/garage 3333:3900 &>/dev/null &
+kubectl port-forward -n storage svc/garage-longhorn 3333:3900 &>/dev/null &
 PF_PID=$!
 trap 'rc=$?; kill "$PF_PID" 2>/dev/null; wait "$PF_PID" 2>/dev/null || true; exit $rc' EXIT
 
