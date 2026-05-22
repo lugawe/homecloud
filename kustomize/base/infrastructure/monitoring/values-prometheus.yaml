@@ -1,4 +1,8 @@
 server:
+  global:
+    external_labels:
+      cluster: homecloud
+
   persistentVolume:
     enabled: true
     storageClass: longhorn
