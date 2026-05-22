@@ -5,8 +5,10 @@ kind: Kustomization
 namespace: monitoring
 
 resources:
+  - namespace.yaml
+  - secrets.yaml
   - opentelemetry
-  - s3-bucket-init-job.yaml
+  - s3-bucket-job.yaml
 
 helmCharts:
   - name: grafana
