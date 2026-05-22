@@ -1,8 +1,8 @@
 global:
   objstore:
     createSecret: false
-    secretName: monitoring-s3-thanos-objstore-secret
-    secretKey: objstore.yml
+    secretName: monitoring-s3-objstore-secret
+    secretKey: objstore.yaml
   thanosRules:
     enabled: false
 

@@ -26,7 +26,7 @@ server:
         - --prometheus.url=http://localhost:9090
         - --grpc-address=0.0.0.0:10901
         - --http-address=0.0.0.0:10902
-        - --objstore.config-file=/etc/thanos/objstore.yml
+        - --objstore.config-file=/etc/thanos/objstore.yaml
       ports:
         - name: grpc
           containerPort: 10901
@@ -43,7 +43,7 @@ server:
     # thanos-sidecar
     - name: thanos-objstore
       secret:
-        secretName: monitoring-s3-thanos-objstore-secret
+        secretName: monitoring-s3-objstore-secret
 
 extraScrapeConfigs: |
   - job_name: thanos-sidecar
