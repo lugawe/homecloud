@@ -17,14 +17,11 @@ envValueFrom:
     secretKeyRef:
       name: monitoring-secrets
       key: GF_SERVER_ROOT_URL
-  GF_SECURITY_ADMIN_USER:
-    secretKeyRef:
-      name: monitoring-secrets
-      key: GF_SECURITY_ADMIN_USER
-  GF_SECURITY_ADMIN_PASSWORD:
-    secretKeyRef:
-      name: monitoring-secrets
-      key: GF_SECURITY_ADMIN_PASSWORD
+
+admin:
+  existingSecret: monitoring-secrets
+  userKey: GF_SECURITY_ADMIN_USER
+  passwordKey: GF_SECURITY_ADMIN_PASSWORD
 
 datasources:
   datasources.yaml:
