@@ -1,0 +1,81 @@
+deploymentMode: Monolithic
+
+loki:
+  auth_enabled: false
+
+  commonConfig:
+    replication_factor: 1
+
+  storage:
+    s3:
+      endpoint: garage-data.storage.svc.cluster.local:3900
+      region: eu-central-1
+      s3ForcePathStyle: true
+      insecure: true
+    bucketNames:
+      admin: monitoring-loki
+      chunks: monitoring-loki
+      ruler: monitoring-loki
+
+  schemaConfig:
+    configs:
+      - from: 2026-01-01
+        object_store: s3
+        store: tsdb
+        schema: v13
+        index:
+          prefix: index_
+          period: 24h
+
+  limits_config:
+    reject_old_samples: true
+    retention_period: 336h
+
+  compactor:
+    working_directory: /var/loki/compactor
+    compaction_interval: 10m
+    retention_enabled: true
+    retention_delete_delay: 2h
+    delete_request_store: s3
+
+singleBinary:
+  enabled: true
+  extraEnv:
+    - name: AWS_ACCESS_KEY_ID
+      valueFrom:
+        secretKeyRef:
+          name: monitoring-secrets
+          key: AWS_ACCESS_KEY_ID
+    - name: AWS_SECRET_ACCESS_KEY
+      valueFrom:
+        secretKeyRef:
+          name: monitoring-secrets
+          key: AWS_SECRET_ACCESS_KEY
+
+  persistence:
+    enabled: true
+    storageClass: longhorn
+    size: 4Gi
+    accessModes:
+      - ReadWriteOnce
+
+  podAnnotations:
+    prometheus.io/scrape: "true"
+    prometheus.io/port: "3100"
+    prometheus.io/path: "/metrics"
+
+# Use cache to reduce s3 calls
+resultsCache:
+  enabled: true
+  allocatedMemory: 256
+
+chunksCache:
+  enabled: true
+  allocatedMemory: 256
+
+gateway:
+  enabled: false
+lokiCanary:
+  enabled: false
+test:
+  enabled: false

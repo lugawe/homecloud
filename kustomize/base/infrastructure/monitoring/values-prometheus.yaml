@@ -1,0 +1,84 @@
+server:
+  persistentVolume:
+    enabled: true
+    storageClass: longhorn
+    size: 8Gi
+
+  retention: "14d"
+  retentionSize: "7GB"
+
+  statefulSet:
+    enabled: true
+    headless:
+      gRPC:
+        enabled: true
+        servicePort: 10901
+
+  extraFlags:
+    - storage.tsdb.max-block-duration=2h
+
+  sidecarContainers:
+    thanos-sidecar:
+      image: thanosio/thanos:v0.41.0
+      args:
+        - sidecar
+        - --tsdb.path=/data
+        - --prometheus.url=http://localhost:9090
+        - --grpc-address=0.0.0.0:10901
+        - --http-address=0.0.0.0:10902
+        - --objstore.config-file=/etc/thanos/objstore.yml
+      ports:
+        - name: grpc
+          containerPort: 10901
+        - name: http
+          containerPort: 10902
+      volumeMounts:
+        - name: thanos-objstore
+          mountPath: /etc/thanos
+          readOnly: true
+        - name: storage-volume
+          mountPath: /data
+
+  extraVolumes:
+    # thanos-sidecar
+    - name: thanos-objstore
+      secret:
+        secretName: monitoring-s3-thanos-objstore-secret
+
+extraScrapeConfigs: |
+  - job_name: thanos-sidecar
+    static_configs:
+      - targets:
+          - localhost:10902
+
+  - job_name: thanos-compactor
+    static_configs:
+      - targets:
+          - thanos-compactor.monitoring.svc.cluster.local:10902
+
+  - job_name: thanos-storegateway
+    static_configs:
+      - targets:
+          - thanos-storegateway.monitoring.svc.cluster.local:10902
+
+  - job_name: thanos-query
+    static_configs:
+      - targets:
+          - thanos-query.monitoring.svc.cluster.local:9090
+
+alertmanager:
+  enabled: true
+
+  persistence:
+    enabled: true
+    storageClass: longhorn
+    size: 2Gi
+
+kube-state-metrics:
+  enabled: true
+
+prometheus-node-exporter:
+  enabled: true
+
+prometheus-pushgateway:
+  enabled: true

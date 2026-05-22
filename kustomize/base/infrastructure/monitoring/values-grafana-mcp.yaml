@@ -1,0 +1,27 @@
+grafana:
+  url: "http://grafana.monitoring.svc.cluster.local:80"
+  apiKeySecret:
+    name: monitoring-secrets
+    key: GRAFANA_SERVICE_ACCOUNT_TOKEN
+
+env:
+  GRAFANA_ORG_ID: "1"
+
+extraArgs:
+  - -address
+  - 0.0.0.0:8000
+  - -transport
+  - streamable-http
+
+service:
+  enabled: true
+  type: ClusterIP
+  port: 8000
+
+metrics:
+  enabled: true
+
+podAnnotations:
+  prometheus.io/scrape: "true"
+  prometheus.io/port: "8000"
+  prometheus.io/path: "/metrics"

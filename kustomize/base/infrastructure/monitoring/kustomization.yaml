@@ -5,9 +5,62 @@ kind: Kustomization
 namespace: monitoring
 
 resources:
-  - namespace.yaml
-  - secrets.yaml
-  - grafana-lgtm
-  - grafana-mcp
   - opentelemetry
-  - alloy
+  - s3-bucket-init-job.yaml
+
+helmCharts:
+  - name: grafana
+    repo: https://grafana-community.github.io/helm-charts
+    version: 12.3.3
+    releaseName: grafana
+    namespace: monitoring
+    valuesFile: values-grafana.yaml
+    includeCRDs: true
+
+  - name: loki
+    repo: https://grafana-community.github.io/helm-charts
+    version: 17.0.1
+    releaseName: loki
+    namespace: monitoring
+    valuesFile: values-loki.yaml
+    includeCRDs: true
+
+  - name: tempo
+    repo: https://grafana-community.github.io/helm-charts
+    version: 2.1.2
+    releaseName: tempo
+    namespace: monitoring
+    valuesFile: values-tempo.yaml
+    includeCRDs: true
+
+  - name: grafana-mcp
+    repo: https://grafana-community.github.io/helm-charts
+    version: 0.15.1
+    releaseName: grafana-mcp
+    namespace: monitoring
+    valuesFile: values-grafana-mcp.yaml
+    includeCRDs: true
+
+  - name: alloy
+    repo: https://grafana.github.io/helm-charts
+    version: 1.8.1
+    releaseName: alloy
+    namespace: monitoring
+    valuesFile: values-alloy.yaml
+    includeCRDs: true
+
+  - name: prometheus
+    repo: https://prometheus-community.github.io/helm-charts
+    version: 29.8.0
+    releaseName: prometheus
+    namespace: monitoring
+    valuesFile: values-prometheus.yaml
+    includeCRDs: true
+
+  - name: thanos
+    repo: https://thanos-community.github.io/helm-charts
+    version: 0.13.1
+    releaseName: thanos
+    namespace: monitoring
+    valuesFile: values-thanos.yaml
+    includeCRDs: true

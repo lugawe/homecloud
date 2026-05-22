@@ -1,0 +1,70 @@
+replicas: 1
+
+deploymentStrategy:
+  type: Recreate
+
+persistence:
+  enabled: true
+  storageClassName: longhorn
+  size: 2Gi
+  accessModes:
+    - ReadWriteOnce
+
+assertNoLeakedSecrets: true
+
+envValueFrom:
+  GF_SERVER_ROOT_URL:
+    secretKeyRef:
+      name: monitoring-secrets
+      key: GF_SERVER_ROOT_URL
+  GF_SECURITY_ADMIN_USER:
+    secretKeyRef:
+      name: monitoring-secrets
+      key: GF_SECURITY_ADMIN_USER
+  GF_SECURITY_ADMIN_PASSWORD:
+    secretKeyRef:
+      name: monitoring-secrets
+      key: GF_SECURITY_ADMIN_PASSWORD
+
+datasources:
+  datasources.yaml:
+    apiVersion: 1
+    datasources:
+      - name: Prometheus
+        type: prometheus
+        uid: prometheus
+        access: proxy
+        url: http://thanos-query:9090
+        isDefault: true
+      - name: Loki
+        type: loki
+        uid: loki
+        access: proxy
+        url: http://loki:3100
+      - name: Tempo
+        type: tempo
+        uid: tempo
+        access: proxy
+        url: http://tempo:3200
+        jsonData:
+          httpMethod: GET
+          tracesToLogsV2:
+            datasourceUid: loki
+            spanStartTimeShift: "-5s"
+            spanEndTimeShift: "5s"
+            filterByTraceID: true
+            filterBySpanID: true
+          tracesToMetrics:
+            datasourceUid: prometheus
+          serviceMap:
+            datasourceUid: prometheus
+          nodeGraph:
+            enabled: true
+
+metrics:
+  enabled: true
+
+podAnnotations:
+  prometheus.io/scrape: "true"
+  prometheus.io/port: "3000"
+  prometheus.io/path: "/metrics"

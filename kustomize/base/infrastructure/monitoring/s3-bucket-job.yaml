@@ -1,0 +1,40 @@
+apiVersion: batch/v1
+
+kind: Job
+
+metadata:
+  namespace: monitoring
+  name: s3-bucket-job
+
+spec:
+  template:
+    spec:
+      restartPolicy: OnFailure
+      containers:
+        - name: aws-cli
+          image: amazon/aws-cli:2.34.51
+          command:
+            - /bin/sh
+            - -c
+            - |
+              aws s3 mb s3://monitoring-thanos || true
+              aws s3 mb s3://monitoring-loki   || true
+              aws s3 mb s3://monitoring-tempo  || true
+          env:
+            - name: AWS_ENDPOINT_URL
+              valueFrom:
+                secretKeyRef:
+                  name: monitoring-secrets
+                  key: AWS_ENDPOINT_URL
+            - name: AWS_DEFAULT_REGION
+              value: eu-central-1
+            - name: AWS_ACCESS_KEY_ID
+              valueFrom:
+                secretKeyRef:
+                  name: monitoring-secrets
+                  key: AWS_ACCESS_KEY_ID
+            - name: AWS_SECRET_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: monitoring-secrets
+                  key: AWS_SECRET_ACCESS_KEY

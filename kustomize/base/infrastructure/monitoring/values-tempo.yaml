@@ -1,0 +1,41 @@
+tempo:
+  retention: 336h
+
+  storage:
+    trace:
+      backend: s3
+      s3:
+        bucket: monitoring-tempo
+        endpoint: garage-data.storage.svc.cluster.local:3900
+        region: eu-central-1
+        insecure: true
+      block:
+        version: vParquet5
+
+  extraEnv:
+    - name: AWS_ACCESS_KEY_ID
+      valueFrom:
+        secretKeyRef:
+          name: monitoring-secrets
+          key: AWS_ACCESS_KEY_ID
+    - name: AWS_SECRET_ACCESS_KEY
+      valueFrom:
+        secretKeyRef:
+          name: monitoring-secrets
+          key: AWS_SECRET_ACCESS_KEY
+
+  metricsGenerator:
+    enabled: true
+    remoteWriteUrl: http://prometheus-server.monitoring.svc.cluster.local/api/v1/write
+
+persistence:
+  enabled: true
+  storageClassName: longhorn
+  size: 8Gi
+  accessModes:
+    - ReadWriteOnce
+
+podAnnotations:
+  prometheus.io/scrape: "true"
+  prometheus.io/port: "3200"
+  prometheus.io/path: "/metrics"

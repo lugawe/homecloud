@@ -1,0 +1,38 @@
+global:
+  objstore:
+    createSecret: false
+    secretName: monitoring-s3-thanos-objstore-secret
+    secretKey: objstore.yml
+  thanosRules:
+    enabled: false
+
+query:
+  enabled: true
+  replicaCount: 1
+  stores:
+    - prometheus-server-headless.monitoring.svc.cluster.local:10901
+
+storegateway:
+  enabled: true
+  replicaCount: 1
+  persistence:
+    enabled: true
+    storageClass: longhorn
+    size: 8Gi
+
+compactor:
+  enabled: true
+  retention:
+    resolutionRaw: 30d
+    resolution5m: 90d
+    resolution1h: 1y
+  persistence:
+    enabled: true
+    storageClass: longhorn
+    size: 8Gi
+
+receive:
+  enabled: false
+
+bucket:
+  enabled: false
