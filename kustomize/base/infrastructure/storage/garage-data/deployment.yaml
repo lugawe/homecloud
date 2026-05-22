@@ -1,0 +1,75 @@
+apiVersion: apps/v1
+
+kind: Deployment
+
+metadata:
+  namespace: storage
+  name: garage-data
+  labels:
+    app: garage-data
+
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: garage-data
+  template:
+    metadata:
+      labels:
+        app: garage-data
+    spec:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+        - name: garage-data
+          image: dxflrs/garage:v2.3.0
+          command:
+            ["/garage", "server", "--single-node", "--default-access-key"]
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
+          env:
+            - name: GARAGE_RPC_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: storage-secrets
+                  key: GARAGE_DATA_RPC_SECRET
+            - name: GARAGE_ADMIN_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: storage-secrets
+                  key: GARAGE_DATA_ADMIN_TOKEN
+            - name: GARAGE_DEFAULT_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: storage-secrets
+                  key: GARAGE_DATA_DEFAULT_ACCESS_KEY
+            - name: GARAGE_DEFAULT_SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: storage-secrets
+                  key: GARAGE_DATA_DEFAULT_SECRET_KEY
+          volumeMounts:
+            - name: garage-data-storage
+              mountPath: /var/lib/garage/meta
+              subPath: meta
+            - name: garage-data-storage
+              mountPath: /var/lib/garage/data
+              subPath: data
+            - name: garage-data-config
+              mountPath: /etc/garage.toml
+              subPath: garage.toml
+      volumes:
+        - name: garage-data-storage
+          persistentVolumeClaim:
+            claimName: garage-data-pvc
+        - name: garage-data-config
+          configMap:
+            name: garage-data-configmap

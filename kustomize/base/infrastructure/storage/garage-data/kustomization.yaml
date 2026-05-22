@@ -5,8 +5,7 @@ kind: Kustomization
 namespace: storage
 
 resources:
-  - namespace.yaml
-  - secrets.yaml
-  - longhorn
-  - garage-data
-  - garage-longhorn
+  - pvc.yaml
+  - configmap.yaml
+  - deployment.yaml
+  - service.yaml

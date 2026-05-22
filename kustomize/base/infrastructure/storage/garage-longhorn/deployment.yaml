@@ -1,0 +1,83 @@
+apiVersion: apps/v1
+
+kind: Deployment
+
+metadata:
+  namespace: storage
+  name: garage-longhorn
+  labels:
+    app: garage-longhorn
+
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: garage-longhorn
+  template:
+    metadata:
+      labels:
+        app: garage-longhorn
+    spec:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+        - name: garage
+          image: dxflrs/garage:v2.3.0
+          command:
+            [
+              "/garage",
+              "server",
+              "--single-node",
+              "--default-access-key",
+              "--default-bucket",
+            ]
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
+          env:
+            - name: GARAGE_RPC_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: storage-secrets
+                  key: GARAGE_LONGHORN_RPC_SECRET
+            - name: GARAGE_ADMIN_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: storage-secrets
+                  key: GARAGE_LONGHORN_ADMIN_TOKEN
+            - name: GARAGE_DEFAULT_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: storage-secrets
+                  key: GARAGE_LONGHORN_DEFAULT_ACCESS_KEY
+            - name: GARAGE_DEFAULT_SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: storage-secrets
+                  key: GARAGE_LONGHORN_DEFAULT_SECRET_KEY
+            - name: GARAGE_DEFAULT_BUCKET
+              value: longhorn-backups
+          volumeMounts:
+            - name: garage-longhorn-storage
+              mountPath: /var/lib/garage/meta
+              subPath: meta
+            - name: garage-longhorn-storage
+              mountPath: /var/lib/garage/data
+              subPath: data
+            - name: garage-longhorn-config
+              mountPath: /etc/garage.toml
+              subPath: garage.toml
+      volumes:
+        - name: garage-longhorn-storage
+          persistentVolumeClaim:
+            claimName: garage-longhorn-pvc
+        - name: garage-longhorn-config
+          configMap:
+            name: garage-longhorn-configmap
