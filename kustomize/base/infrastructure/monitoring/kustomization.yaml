@@ -66,3 +66,12 @@ helmCharts:
     namespace: monitoring
     valuesFile: values-thanos.yaml
     includeCRDs: true
+
+# adds namespace monitoring to thanos
+patches:
+  - patch: |-
+      - op: add
+        path: /metadata/namespace
+        value: monitoring
+    target:
+      labelSelector: "app.kubernetes.io/instance=thanos"

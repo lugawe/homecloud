@@ -4,7 +4,7 @@ kind: Kustomization
 
 resources:
   - infrastructure/node-config
-  # - infrastructure/cilium
+  - infrastructure/cilium
   - infrastructure/cert-manager
   - infrastructure/secrets-system
   - infrastructure/storage
