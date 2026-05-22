@@ -30,5 +30,5 @@ helmCharts:
     releaseName: prometheus
     repo: https://prometheus-community.github.io/helm-charts
     name: prometheus
-    version: 29.7.0
+    version: 29.8.0
     valuesFile: values-prometheus.yaml
