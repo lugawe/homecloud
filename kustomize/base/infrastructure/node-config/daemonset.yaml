@@ -19,7 +19,7 @@ spec:
         - operator: Exists
       containers:
         - name: sysctl-config
-          image: busybox:1.37-musl
+          image: busybox:1.38-musl
           securityContext:
             privileged: true
           command:
