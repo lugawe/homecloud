@@ -28,7 +28,7 @@ spec:
           type: RuntimeDefault
       initContainers:
         - name: code-server-create-coderc
-          image: busybox:1.37-musl
+          image: busybox:1.38-musl
           securityContext:
             allowPrivilegeEscalation: false
             capabilities:
