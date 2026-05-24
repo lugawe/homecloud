@@ -1,7 +1,7 @@
 .DS_Store
 
 *.env*
-!*.env*.tmpl
+!*.env.tmpl
 
 .secrets/
 
