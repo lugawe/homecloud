@@ -35,6 +35,11 @@ spec:
             capabilities:
               drop:
                 - ALL
+          resources:
+            requests:
+              memory: 256Mi
+            limits:
+              memory: 512Mi
           args: [ "start" ]
           env:
             - name: KC_DB
