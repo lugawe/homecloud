@@ -15,7 +15,7 @@ v() {
 
 init() {
 
-	vault=".secrets/vault"
+	vault="secrets/.secrets/vault"
 
 	if [ -f "$vault" ]; then
 		echo "Error: Vault is already initialized"
