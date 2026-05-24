@@ -33,9 +33,13 @@ spec:
             capabilities:
               drop:
                 - ALL
-          envFrom:
-            - secretRef:
-                name: dev-secrets
+          env:
+            - name: POSTGRES_DB
+              value: dev
+            - name: POSTGRES_USER
+              value: dev
+            - name: POSTGRES_PASSWORD
+              value: dev
           volumeMounts:
             - name: postgres-storage
               mountPath: /var/lib/postgresql

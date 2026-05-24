@@ -46,9 +46,6 @@ spec:
             capabilities:
               drop:
                 - ALL
-          envFrom:
-            - secretRef:
-                name: dev-secrets
           volumeMounts:
             - name: code-server-storage
               mountPath: /home/coder/.coderc
