@@ -40,7 +40,6 @@ Prepare config file in `/etc/rancher/k3s/config.yaml`:
 
 ```yaml
 data-dir: /mnt/homecloud/k3s
-flannel-backend: none
 ```
 
 Installation:
