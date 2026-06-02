@@ -27,7 +27,7 @@ spec:
           type: RuntimeDefault
       containers:
         - name: opencloud-app
-          image: opencloudeu/opencloud-rolling:7.0.0
+          image: opencloudeu/opencloud-rolling:7.1.0
           securityContext:
             allowPrivilegeEscalation: false
             capabilities:
