@@ -3,7 +3,7 @@
 *.env*
 !*.env.tmpl
 
-.secrets/
+.env.secrets/
 
 .backups/
 
