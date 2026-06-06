@@ -9,7 +9,6 @@ resources:
   - infrastructure/storage
   - infrastructure/argocd
   - infrastructure/monitoring
-  - infrastructure/communication
   - infrastructure/tailscale
   - infrastructure/keycloak
   # ---
