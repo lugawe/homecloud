@@ -9,31 +9,30 @@ if [ "$(basename "$PWD")" != "homecloud" ]; then
 	exit 1
 fi
 
+SECRETS_DIR="secrets/.env.secrets"
+VAULT_INIT_FILE="$SECRETS_DIR/vault-init"
+
 v() {
 	kubectl exec -n secrets-system svc/vault -- "$@"
 }
 
 init() {
-
-	vault="secrets/.secrets/vault"
-
-	if [ -f "$vault" ]; then
-		echo "Error: Vault is already initialized"
+	if [[ -f "$VAULT_INIT_FILE" ]]; then
+		echo "Error: Vault is already initialized ($VAULT_INIT_FILE exists)"
 		exit 1
 	fi
 
 	if ! init_output=$(v vault operator init); then
 		echo "Error: Vault operator init failed"
-		echo $init_output
+		echo "$init_output"
 		exit 1
 	fi
 
 	echo "$init_output"
-	echo "$init_output" >"$vault"
+	printf '%s\n' "$init_output" >"$VAULT_INIT_FILE"
 }
 
 configure() {
-
 	token="$1"
 
 	v vault login "$token"
@@ -44,8 +43,8 @@ configure() {
 
 usage() {
 	echo "Usage:"
-	echo "  vault-init.sh init"
-	echo "  vault-init.sh configure <token>"
+	echo "  secrets/vault-init.sh init"
+	echo "  secrets/vault-init.sh configure <token>"
 	exit 1
 }
 
