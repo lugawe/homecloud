@@ -13,7 +13,7 @@ resources:
 helmCharts:
   - name: grafana
     repo: https://grafana-community.github.io/helm-charts
-    version: 12.4.2
+    version: 12.4.8
     releaseName: grafana
     namespace: monitoring
     valuesFile: values-grafana.yaml
