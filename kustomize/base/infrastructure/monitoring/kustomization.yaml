@@ -53,7 +53,7 @@ helmCharts:
 
   - name: prometheus
     repo: https://prometheus-community.github.io/helm-charts
-    version: 29.13.0
+    version: 29.17.0
     releaseName: prometheus
     namespace: monitoring
     valuesFile: values-prometheus.yaml
