@@ -61,7 +61,7 @@ helmCharts:
 
   - name: thanos
     repo: https://thanos-community.github.io/helm-charts
-    version: 0.25.0
+    version: 0.27.0
     releaseName: thanos
     namespace: monitoring
     valuesFile: values-thanos.yaml
