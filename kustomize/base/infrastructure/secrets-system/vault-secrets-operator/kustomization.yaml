@@ -9,7 +9,7 @@ helmCharts:
     releaseName: vault-secrets-operator
     repo: https://helm.releases.hashicorp.com
     name: vault-secrets-operator
-    version: 1.5.0
+    version: 1.5.1
     includeCRDs: true
     valuesInline:
       tests:
